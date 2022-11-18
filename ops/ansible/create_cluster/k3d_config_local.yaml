@@ -2,9 +2,13 @@ apiVersion: k3d.io/v1alpha4
 kind: Simple
 metadata:
   name: kube-polycode-local
+network: host
 options:
   k3s:
     extraArgs:
       - arg: --disable=traefik
+        nodeFilters:
+          - servers:*
+      - arg: --cluster-cidr=10.10.0.0/16
         nodeFilters:
           - servers:*

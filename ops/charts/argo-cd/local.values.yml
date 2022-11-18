@@ -11,9 +11,9 @@ server:
       namespace: argo-cd
       project: local
       source:
-        repoURL: git@gitlab.polytech.umontpellier.fr:do-polycode/frontend.git
+        repoURL: https://github.com/polycode-lucido/oidc-poc.git
         targetRevision: HEAD
-        path: helm/chart
+        path: frontend/helm/chart
         helm:
           releaseName: frontend
           valueFiles:
@@ -25,9 +25,9 @@ server:
       namespace: argo-cd
       project: local
       source:
-        repoURL: git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+        repoURL: https://github.com/polycode-lucido/oidc-poc.git
         targetRevision: HEAD
-        path: helm/api/chart
+        path: backend/helm/api/chart
         helm:
           releaseName: backend
           valueFiles:
@@ -39,9 +39,9 @@ server:
       namespace: argo-cd
       project: local
       source:
-        repoURL: git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+        repoURL: https://github.com/polycode-lucido/oidc-poc.git
         targetRevision: HEAD
-        path: helm/runner/chart
+        path: backend/helm/runner/chart
         helm:
           releaseName: runner
           valueFiles:
@@ -79,21 +79,15 @@ server:
       namespace: argo-cd
       description: Polycode Local Project
       sourceRepos:
-        - git@gitlab.polytech.umontpellier.fr:do-polycode/frontend.git
-        - git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+        - https://github.com/polycode-lucido/oidc-poc.git
       destinations:
         - namespace: polycode
           server: https://kubernetes.default.svc
 configs:
   repositories:
     frontend:
-      url: git@gitlab.polytech.umontpellier.fr:do-polycode/frontend.git
+      url: https://github.com/polycode-lucido/oidc-poc.git
       name: frontend
     backend:
-      url: git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+      url: https://github.com/polycode-lucido/oidc-poc.git
       name: backend
-  knownHosts:
-    data:
-      ssh_known_hosts: |
-        gitlab.polytech.umontpellier.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBwrfX+ORYpnJXbL147VngSjRh581nL2pC5acEC9p9Zz
-        gitlab.polytech.umontpellier.fr ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLdTyDhj8idM5LvRVraa3Hcy877xd8T8q0xDzIYI+GdEbKOc+eN4Gqf9QlrKqfSHNo4ydzM8Wwoah+xehGUrYrM=

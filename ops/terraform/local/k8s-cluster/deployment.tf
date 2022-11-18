@@ -12,16 +12,6 @@ resource "helm_release" "argo_cd_release" {
     value = var.argo_cd_admin_password
   }
 
-  set_sensitive {
-    name  = "configs.repositories.frontend.sshPrivateKey"
-    value = var.gitlab_deploy_key
-  }
-
-  set_sensitive {
-    name  = "configs.repositories.backend.sshPrivateKey"
-    value = var.gitlab_deploy_key
-  }
-
   depends_on = [
     kubernetes_namespace.argo_cd_namespace,
     helm_release.ingress_nginx_release
