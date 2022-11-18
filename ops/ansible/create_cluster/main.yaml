@@ -7,10 +7,3 @@
   roles:
     - role: k3d/master
 
-# Install k3s on nodes & join master
-- hosts: k3d-nodes
-  become: yes
-  become_user: root
-  roles:
-    - role: k3d/node
-      when: deployment_environment == 'prod'

@@ -4,7 +4,7 @@ network: kube_polycode_prod
 options:
   k3s:
     extraArgs:
-      - arg: --tls-san=https://prod.polycode.do-2021.fr
+      - arg: --tls-san=https://polycode.simonlucido.com
         nodeFilters:
           - servers:*
       - arg: --disable=traefik

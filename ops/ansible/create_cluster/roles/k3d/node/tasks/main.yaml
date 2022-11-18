@@ -1,7 +1,0 @@
-- name: Download & install k3d
-  ansible.builtin.shell:
-    cmd: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
-
-- name: Register to cluster
-  ansible.builtin.shell:
-    cmd: k3d node create {{ inventory_hostname }} --role agent --cluster https://{{ deployment_environment }}.{{ deployment_url }}:6443 --token {{ hostvars[groups['k3d-master'][0]]['cluster_token'] }}
