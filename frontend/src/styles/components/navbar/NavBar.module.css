@@ -1,0 +1,19 @@
+.transparent {
+  background-color: transparent;
+  box-shadow: none;
+}
+
+.iconsContainer {
+  display: flex;
+  flex-direction: row;
+}
+
+.menuIcon {
+  margin-left: 2.5vw;
+}
+
+.homeLink {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}

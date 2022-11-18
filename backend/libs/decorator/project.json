@@ -1,0 +1,32 @@
+{
+  "root": "libs/decorator",
+  "sourceRoot": "libs/decorator/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/decorator",
+        "main": "libs/decorator/src/index.ts",
+        "tsConfig": "libs/decorator/tsconfig.lib.json",
+        "assets": ["libs/decorator/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/decorator/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/decorator"],
+      "options": {
+        "jestConfig": "libs/decorator/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

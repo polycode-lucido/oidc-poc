@@ -1,0 +1,27 @@
+version: '3.7'
+
+volumes:
+  postgres:
+  mongo:
+
+services:
+  postgres:
+    image: bitnami/postgresql:14.1.0-debian-10-r31
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/bitnami/postgresql
+    environment:
+      - POSTGRESQL_USER=postgres
+      - POSTGRESQL_PASSWORD=postgres
+      - POSTGRESQL_DATABASE=postgres
+  mongo:
+    image: bitnami/mongodb:4.4.14-debian-10-r33
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+      - mongo:/bitnami/mongodb
+    environment:
+      - MONGODB_ROOT_PASSWORD=root

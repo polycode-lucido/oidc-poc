@@ -1,0 +1,22 @@
+.grabIcon {
+  cursor: pointer;
+  min-width: 0;
+}
+
+.spacer {
+  width: 2rem;
+}
+
+.grow {
+  flex-grow: 1;
+}
+
+.listContent {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+.name {
+  width: 15rem;
+}

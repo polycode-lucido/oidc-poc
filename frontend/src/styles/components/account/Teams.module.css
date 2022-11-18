@@ -1,0 +1,105 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 60px 20px 60px;
+  width: 100%;
+  box-sizing: border-box;
+  position: relative;
+}
+
+.contentContainer {
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin: 40px 40px 100px 0px;
+}
+
+.captainOf,
+.memberOf {
+  /* width: 55%; */
+  text-overflow: ellipsis;
+  align-items: center;
+}
+
+.teamsList {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 40px 0;
+}
+
+.titleContainer {
+  align-self: flex-start;
+}
+
+.teamContainer {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 10px 10px 20px;
+  border-radius: 5px;
+  border-style: solid;
+  border-width: 1px;
+  cursor: pointer;
+}
+
+.teamName {
+  width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.teamInnerLeft,
+.teamInnerRight {
+  align-items: center;
+}
+
+.teamInnerLeft {
+  margin-right: 8px;
+}
+
+.teamInnerRight {
+  margin-left: 8px;
+}
+
+.captain {
+  align-items: center;
+}
+
+.loaderContainer {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 0;
+}
+
+.noData {
+  margin-top: -10px;
+  text-align: left;
+  align-self: flex-start;
+}
+
+@media (max-width: 1100px) {
+  .contentContainer {
+    width: 90%;
+  }
+}
+
+@media (max-width: 768px) {
+  .contentContainer {
+    margin: 40px 0 20px 0;
+    width: 80vw;
+  }
+
+  .teamName {
+    width: 40vw;
+  }
+
+  .captain {
+    display: none;
+  }
+}

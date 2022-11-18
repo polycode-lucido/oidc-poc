@@ -1,0 +1,28 @@
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.innerContainer .titleContainer {
+  display: flex;
+  justify-content: center;
+  padding-top: 5px;
+}
+
+.titleContainer .title {
+  font-size: 1.3rem;
+}
+
+.radioGroup {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  padding: 0 0 5px 5px;
+}
+
+.formGroupLabel {
+  margin: 0;
+  width: 100%;
+}

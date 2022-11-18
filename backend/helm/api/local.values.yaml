@@ -1,0 +1,42 @@
+# Local values for backend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 1
+
+fullOverrideEnv:
+  - name: AUTH_JWT_ISSUER
+    value: https://api.polycode.127.0.0.1.sslip.io
+  - name: AUTH_JWT_AUDIENCE
+    value: https://polycode.127.0.0.1.sslip.io
+  - name: PUBLIC_WWW_URL
+    value: https://www.polycode.127.0.0.1.sslip.io
+  - name: MAIL_FROM_DO_NOT_REPLY
+    value: noreply@polycode.127.0.0.1.sslip.io
+  - name: MAIL_FROM_DO_NOT_REPLY_NAME
+    value: PolyCode
+  - name: EMAIL_PROVIDER
+    value: FAKE
+  - name: AUTH_DATABASE_HOST
+    value: "172.17.0.1"
+  - name: AUTH_DATABASE_PORT
+    value: "5432"
+  - name: AUTH_DATABASE_USER
+    value: postgres
+  - name: AUTH_DATABASE_PASSWORD
+    value: postgres
+  - name: AUTH_DATABASE_NAME
+    value: postgres
+  - name: MONGODB_URL
+    value: "mongodb://172.17.0.1:27017"
+  - name: MONGODB_USER
+    value: root
+  - name: MONGODB_PASSWORD
+    value: root
+
+ingress:
+  hosts:
+    - host: api.polycode.127.0.0.1.sslip.io
+      paths:
+        - path: /
+          pathType: ImplementationSpecific

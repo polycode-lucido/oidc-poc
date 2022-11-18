@@ -1,0 +1,33 @@
+{
+  "root": "libs/team-provider",
+  "sourceRoot": "libs/team-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/team-provider",
+        "tsConfig": "libs/team-provider/tsconfig.lib.json",
+        "packageJson": "libs/team-provider/package.json",
+        "main": "libs/team-provider/src/index.ts",
+        "assets": ["libs/team-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/team-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/team-provider"],
+      "options": {
+        "jestConfig": "libs/team-provider/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

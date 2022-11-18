@@ -1,0 +1,34 @@
+{
+  "root": "libs/query-manager",
+  "sourceRoot": "libs/query-manager/src",
+  "projectType": "library",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/query-manager",
+        "tsConfig": "libs/query-manager/tsconfig.lib.json",
+        "packageJson": "libs/query-manager/package.json",
+        "main": "libs/query-manager/src/index.ts",
+        "assets": ["libs/query-manager/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/query-manager/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/query-manager"],
+      "options": {
+        "jestConfig": "libs/query-manager/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

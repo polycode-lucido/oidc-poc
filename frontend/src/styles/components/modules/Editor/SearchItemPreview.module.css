@@ -1,0 +1,19 @@
+.id {
+  font-family: 'Courier New', Courier, monospace;
+  margin-right: 1em;
+  font-size: small;
+}
+.name {
+  display: inline-block;
+  width: 15em;
+}
+
+.text {
+  text-overflow: clip;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.itemIcon {
+  min-width: 0;
+}

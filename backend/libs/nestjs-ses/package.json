@@ -1,0 +1,59 @@
+{
+  "name": "@polycode/nestjs-ses",
+  "version": "0.0.5",
+  "description": "NestJS provider for sending emails with ses",
+  "author": "Nuno Carvalhão <nuno.carvalhao@gmail.com>, Simon Lucido <simon.lucido@etu.umontpellier.fr>",
+  "license": "MIT",
+  "main": "dist/index.js",
+  "files": [
+    "dist/**/*",
+    "*.md"
+  ],
+  "scripts": {
+    "start:dev": "tsc -w",
+    "build": "tsc",
+    "prepare": "npm run build",
+    "format": "prettier --write \"src/**/*.ts\"",
+    "lint": "tslint -p tsconfig.json -c tslint.json",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:cov": "jest --coverage",
+    "test:e2e": "jest --config ./test/jest-e2e.json"
+  },
+  "keywords": [
+    "nestjs",
+    "ses",
+    "emails",
+    "amazon",
+    "aws",
+    "email"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NextNC/nestjs-ses"
+  },
+  "bugs": {
+    "url": "https://github.com/NextNC/nestjs-ses"
+  },
+  "peerDependencies": {
+    "@nestjs/common": "^8.0.0"
+  },
+  "jest": {
+    "moduleFileExtensions": [
+      "js",
+      "json",
+      "ts"
+    ],
+    "rootDir": "src",
+    "testRegex": ".spec.ts$",
+    "transform": {
+      "^.+\\.(t|j)s$": "ts-jest"
+    },
+    "coverageDirectory": "../coverage",
+    "testEnvironment": "node"
+  },
+  "homepage": "https://github.com/NextNC/nestjs-ses"
+}

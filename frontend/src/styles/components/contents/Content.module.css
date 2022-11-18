@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 275px;
+  height: 225px;
+  margin: 30px 60px 30px 0;
+  border-radius: 5px;
+}
+
+.container:hover {
+  cursor: pointer;
+}
+
+.container:hover .descriptionContainer {
+  height: 100%;
+  z-index: 1;
+  transition: 0.8s ease;
+}
+
+.container:hover .description,
+.container:hover .carrotContainer {
+  display: block;
+  transition: 0.2s ease;
+}
+
+.container:hover .carrot {
+  display: flex;
+}
+
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow-x: hidden;
+  height: 35%;
+}
+
+.titleContainer {
+  display: flex;
+  justify-content: center;
+  overflow-x: hidden;
+  padding: 0 10px;
+}
+
+.type {
+  margin: 0 auto;
+  font-size: 0.8rem;
+}
+
+.title {
+  font-size: 1.4rem;
+  text-align: center;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.footerContainer {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  height: 100%;
+}
+
+.imageContainer {
+  position: relative;
+  display: flex;
+  flex-grow: 1;
+  z-index: 1;
+  height: 0;
+}
+
+.image {
+  border-radius: 0 0 3px 3px;
+  object-fit: cover;
+}
+
+.descriptionContainer {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  width: 100%;
+  height: 0;
+  color: white;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px);
+  transition: 1s ease-out;
+}
+
+.descriptionContainer .description {
+  display: None;
+  color: white;
+  font-size: 0.9rem;
+  padding: 10px;
+}
+
+.descriptionContainer .carrotContainer {
+  display: None;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding-bottom: 2px;
+}
+
+.carrotContainer .innerCarrotContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.innerCarrotContainer .nbCarrot {
+  display: flex;
+  align-items: center;
+  height: 30px;
+  margin: 7px 5px 0 0;
+}

@@ -1,0 +1,25 @@
+.container {
+  box-shadow: none;
+  border: 1px solid;
+  border-radius: 5px;
+  outline: none;
+}
+
+.container::before {
+  display: none;
+}
+
+.headerContainer {
+  margin: 0;
+}
+
+.headerContainer > * {
+  margin: 0;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}

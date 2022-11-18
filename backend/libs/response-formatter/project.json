@@ -1,0 +1,32 @@
+{
+  "root": "libs/response-formatter",
+  "sourceRoot": "libs/response-formatter/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/response-formatter",
+        "main": "libs/response-formatter/src/index.ts",
+        "tsConfig": "libs/response-formatter/tsconfig.lib.json",
+        "assets": ["libs/response-formatter/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/response-formatter/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/response-formatter"],
+      "options": {
+        "jestConfig": "libs/response-formatter/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

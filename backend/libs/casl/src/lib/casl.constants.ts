@@ -1,0 +1,3 @@
+export const CASL_DECORATOR_PREFIX = '__auth';
+export const CASL_DECORATOR_POLICIES = '${CASL_DECORATOR_PREFIX}.policies';
+export const CASL_DECORATOR_POLICIES_OPERATOR = `${CASL_DECORATOR_PREFIX}.operator`;

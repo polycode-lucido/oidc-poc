@@ -1,0 +1,20 @@
+.container {
+  width: 100%;
+  border: 1px solid;
+  border-radius: 5px;
+}
+
+.innerContainer {
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 12px;
+}
+
+.leftSideContainer {
+  align-items: center;
+}
+
+.captain {
+  align-items: center;
+}

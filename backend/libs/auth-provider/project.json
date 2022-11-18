@@ -1,0 +1,33 @@
+{
+  "root": "libs/auth-provider",
+  "sourceRoot": "libs/auth-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/auth-provider",
+        "tsConfig": "libs/auth-provider/tsconfig.lib.json",
+        "packageJson": "libs/auth-provider/package.json",
+        "main": "libs/auth-provider/src/index.ts",
+        "assets": ["libs/auth-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/auth-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/auth-provider"],
+      "options": {
+        "jestConfig": "libs/auth-provider/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

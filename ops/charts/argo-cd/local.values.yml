@@ -1,0 +1,99 @@
+server:
+  ingress:
+    enabled: true
+    annotations:
+      kubernetes.io/ingress.class: nginx
+    hosts:
+      - argo.polycode.127.0.0.1.sslip.io
+  insecure: true # disable force tls from argo
+  additionalApplications:
+    - name: local-frontend
+      namespace: argo-cd
+      project: local
+      source:
+        repoURL: git@gitlab.polytech.umontpellier.fr:do-polycode/frontend.git
+        targetRevision: HEAD
+        path: helm/chart
+        helm:
+          releaseName: frontend
+          valueFiles:
+            - ../local.values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: polycode
+    - name: local-api
+      namespace: argo-cd
+      project: local
+      source:
+        repoURL: git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+        targetRevision: HEAD
+        path: helm/api/chart
+        helm:
+          releaseName: backend
+          valueFiles:
+            - ../local.values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: polycode 
+    - name: local-runner
+      namespace: argo-cd
+      project: local
+      source:
+        repoURL: git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+        targetRevision: HEAD
+        path: helm/runner/chart
+        helm:
+          releaseName: runner
+          valueFiles:
+            - ../local.values.yaml
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: polycode 
+    - name: postgresql
+      namespace: argo-cd
+      project: default
+      source:
+        repoURL: 'https://github.com/bitnami/charts.git'
+        path: bitnami/postgresql-ha
+        targetRevision: HEAD
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: polycode
+      helm:
+        releaseName: postgresql
+    - name: mongodb
+      namespace: argo-cd
+      project: default
+      source:
+        repoURL: 'https://github.com/bitnami/charts.git'
+        path: bitnami/mongodb
+        targetRevision: HEAD
+      destination:
+        server: 'https://kubernetes.default.svc'
+        namespace: polycode
+      helm:
+        releaseName: mongodb
+
+  additionalProjects:
+    - name: local
+      namespace: argo-cd
+      description: Polycode Local Project
+      sourceRepos:
+        - git@gitlab.polytech.umontpellier.fr:do-polycode/frontend.git
+        - git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+      destinations:
+        - namespace: polycode
+          server: https://kubernetes.default.svc
+configs:
+  repositories:
+    frontend:
+      url: git@gitlab.polytech.umontpellier.fr:do-polycode/frontend.git
+      name: frontend
+    backend:
+      url: git@gitlab.polytech.umontpellier.fr:do-polycode/backend.git
+      name: backend
+  knownHosts:
+    data:
+      ssh_known_hosts: |
+        gitlab.polytech.umontpellier.fr ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBwrfX+ORYpnJXbL147VngSjRh581nL2pC5acEC9p9Zz
+        gitlab.polytech.umontpellier.fr ecdsa-sha2-nistp256 AAAAE2VjZHNhLXNoYTItbmlzdHAyNTYAAAAIbmlzdHAyNTYAAABBBLdTyDhj8idM5LvRVraa3Hcy877xd8T8q0xDzIYI+GdEbKOc+eN4Gqf9QlrKqfSHNo4ydzM8Wwoah+xehGUrYrM=

@@ -1,0 +1,25 @@
+.head {
+  display: flex;
+}
+
+.autoMargin {
+  margin: auto;
+}
+
+.expandButton {
+  transition: transform 0.2s ease-in-out;
+  margin: auto;
+}
+
+.expandButtonContainer {
+  width: 2.5rem;
+  height: fit-content;
+  margin: auto;
+  height: 2.5rem;
+  overflow: hidden;
+}
+
+.clickableSummary {
+  flex-grow: 1;
+  display: flex;
+}

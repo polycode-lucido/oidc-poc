@@ -1,0 +1,22 @@
+.root {
+  display: grid;
+  margin-left: 1rem;
+  flex-grow: 1;
+  height: calc(100vh - var(--nav-height));
+  grid-template-columns: 1fr 2rem 1fr;
+  margin-right: 1rem;
+}
+
+.left {
+  display: flex;
+  flex-direction: column;
+  height: calc(100vh - var(--nav-height) - 0.5rem);
+  overflow: auto;
+  /* margin-right: 0.5rem; */
+}
+
+.components {
+  width: 100%;
+  overflow: auto;
+  flex-grow: 1;
+}

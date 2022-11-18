@@ -1,0 +1,19 @@
+.container {
+  align-items: stretch;
+  justify-content: space-between;
+}
+
+.columnContainer {
+  width: 48%;
+}
+
+.preview {
+  display: initial;
+  width: 100%;
+}
+
+.editor {
+  width: 100%;
+  box-sizing: border-box;
+  height: 100%;
+}

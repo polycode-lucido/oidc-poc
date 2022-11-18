@@ -1,0 +1,540 @@
+{
+  "components": {
+    "email": {
+      "resendSuccess": "Email sent successfully",
+      "resendError": "Email could not be sent",
+      "title": "Email not verified",
+      "sentMail": "We have sent you an email to",
+      "sentMailSuite": "Please check your email and click the link to verify your account.",
+      "didNotReceive": "Did not receive the email?",
+      "resend": "Resend email"
+    },
+    "account": {
+      "menu": {
+        "profile": "Profile",
+        "settings": "Settings",
+        "teams": "Teams",
+        "password": "Password"
+      },
+      "password": {
+        "titlePage": "Change Password",
+        "oldPassword": "Old Password",
+        "newPassword": "New Password",
+        "passwordLabel": "password",
+        "passwordConfirmationLabel": "confirmation",
+        "saveButton": "Save",
+        "resetButton": "Reset",
+        "someFieldsEmpty": "Some fields are empty",
+        "passwordsMismatch": "Passwords don't match",
+        "passwordRulesNotRespected": "Must have at least 8 characters"
+      },
+      "profile": {
+        "title": "Profile",
+        "information": "Information",
+        "username": "Username",
+        "emails": "E-mails",
+        "preferredLanguage": "Preferred Language",
+        "score": "Score",
+        "polypoints": "Polypoints",
+        "rank": "Rank",
+        "biography": "Biography",
+        "unknownRank": "Unknown",
+        "serverFetchFailed": "Failed to fetch settings from server",
+        "noBiography": "No biography"
+      },
+      "settings": {
+        "titlePage": "Settings",
+        "information": "Information",
+        "username": "Username",
+        "emails": "Emails",
+        "primaryEmail": "Primary email",
+        "secondaryEmail": "Secondary email",
+        "preferedLanguage": "Prefered Language",
+        "biography": "Biography",
+        "saveButton": "Save",
+        "resetButton": "Reset",
+        "saveSuccess": "Settings saved successfully",
+        "usernameTooShort": "Username must be at least 3 characters long",
+        "usernameTooLong": "Username must be at most 20 characters long",
+        "emailTooShort": "Email must be at least 3 characters long",
+        "emailTooLong": "Email must be at most 50 characters long",
+        "emailInvalid": "Email is invalid",
+        "biographyTooLong": "Biography must be at most 500 characters long",
+        "serverFetchFailed": "Failed to fetch data from server",
+        "serverSaveFailed": "Failed to save data to server"
+      },
+      "teams": {
+        "title": "Teams",
+        "captainOf": "Captain of",
+        "memberOf": "Member of",
+        "seeAll": "See all teams",
+        "create": "Create a new team",
+        "notCaptainOf": "You are not captain of any team",
+        "notMemberOf": "You are not member of any team",
+        "fetchError": "Failed to fetch teams from server"
+      }
+    },
+    "base": {
+      "modal": {
+        "cancel": "Cancel"
+      },
+      "searchBar": {
+        "placeholder": "Search"
+      }
+    },
+    "contents": {
+      "edit": {
+        "codeEditorEditor": {
+          "type": "Editor",
+          "language": "Language",
+          "allowedLanguages": "Allowed languages",
+          "defaultCode": "Default code",
+          "validators": {
+            "title": "Validators",
+            "input": "Input",
+            "expectedOutput": "Expected output",
+            "hidden": "Hidden",
+            "new": "+ New"
+          },
+          "hints": {
+            "title": "Hints",
+            "saving": "(saving...)",
+            "saved": "(saved)",
+            "new": "+ New",
+            "text": "Text",
+            "price": "Price",
+            "save": "Save",
+            "errorNew": "Failed to create hint",
+            "errorSave": "Failed to save hint",
+            "errorDelete": "Failed to delete hint",
+            "errorFetch": "Failed to fetch hints"
+          }
+        },
+        "componentDialogButton": {
+          "container": "Container",
+          "editor": "Editor",
+          "markdown": "Markdown",
+          "quiz": "Quiz"
+        },
+        "containerEditor": {
+          "type": "Container",
+          "description": "Containing {0} component{1}",
+          "orientation": "Orientation",
+          "horizontal": "Horizontal",
+          "vertical": "Vertical",
+          "components": "Components",
+          "noComponents": "No components",
+          "new": "+ NEW"
+        },
+        "contentEditorWizard": {
+          "description": "Description",
+          "name": "Name",
+          "save": "Save",
+          "reward": "Reward",
+          "errors": {
+            "nameEmpty": "Name is empty",
+            "nameTooLong": "Name must be at most 50 characters long",
+            "descriptionEmpty": "Description is empty",
+            "descriptionTooLong": "Description must be at most 500 characters long"
+          }
+        },
+        "markdownEditor": {
+          "type": "Markdown",
+          "editor": "Editor",
+          "preview": "Preview"
+        },
+        "newComponentDialog": {
+          "title": "New Component",
+          "cancel": "Cancel"
+        }
+      },
+      "contents": {
+        "title": "Contents",
+        "fetchError": "Failed to fetch content from server"
+      },
+      "contentList": {
+        "notFound": "No contents found"
+      }
+    },
+    "filters": {
+      "sortFilter": {
+        "title": "Sort",
+        "name": "Name",
+        "date": "Date",
+        "completion": "Completion"
+      },
+      "stateFilter": {
+        "title": "State",
+        "done": "Done",
+        "started": "Started"
+      },
+      "tagFilter": {
+        "title": "Tags"
+      }
+    },
+    "home": {
+      "heroTale": {
+        "tryNow": "TRY NOW"
+      },
+      "homeContent": {
+        "lastViewed": "Last Viewed",
+        "newContents": "New contents",
+        "newModules": "New modules",
+        "empty": {
+          "contents": "No contents to show",
+          "modules": "No modules to show"
+        },
+        "errors": {
+          "module": "Failed to fetch modules from server",
+          "content": "Failed to fetch content from server"
+        }
+      },
+      "homePage": {
+        "moduleError": "Failed to fetch modules from server"
+      },
+      "landingPage": {
+        "manifesto": "Prepare yourself for coding interviews or learn new programming languages in minutes !",
+        "start": "START TODAY"
+      }
+    },
+    "modules": {
+      "moduleDetails": {
+        "heroTale": {
+          "resumeButton": "RESUME"
+        },
+        "fetchError": "Failed to fetch data from server"
+      },
+      "moduleEditor": {
+        "getModuleError": "Failed to fetch module from server"
+      },
+      "index": {
+        "filters": "Filters"
+      },
+      "moduleList": {
+        "notFound": "No modules found"
+      },
+      "modules": {
+        "title": "Modules",
+        "fetchError": "Failed to fetch modules from server"
+      },
+      "submodules": "Submodules",
+      "contents": "Contents",
+      "editor": {
+        "titleNew": "New Module",
+        "titleEdit": "Edit Module",
+        "name": "Name",
+        "description": "Description",
+        "create": "Create",
+        "update": "Update",
+        "updated": "Module updated successfully",
+        "created": "Module created successfully",
+        "reward": "Reward",
+        "tags": "Tags",
+        "insertSubmodule": "Insert a submodule",
+        "insertContent": "Insert a content",
+        "search": "Search",
+        "onlyMyModules": "Show only my modules",
+        "onlyMyContents": "Show only my contents",
+        "error": {
+          "save": "Failed to save module",
+          "search": "Failed to search"
+        }
+      }
+    },
+    "navbar": {
+      "emailNotification": {
+        "resendSuccess": "Email sent successfully",
+        "resendError": "Failed to send email",
+        "title": "Verify your email",
+        "sentMail": "We have send you an email at {0}. Please click on the link in the email to verify your email address.",
+        "didNotReceive": "Didn't receive the email?",
+        "resend": "Resend email"
+      },
+      "menu": {
+        "profile": "Profile",
+        "leaderboard": "Leaderboard",
+        "modules": "Modules",
+        "contents": "Contents",
+        "logout": "Logout"
+      },
+      "navBar": {
+        "contents": "Contents",
+        "modules": "Modules",
+        "certification": "Certification",
+        "signIn": "Sign In"
+      }
+    },
+    "playground": {
+      "hints": {
+        "title": "Hints",
+        "item": "Hint #",
+        "buy": "buy another hint for",
+        "fetchError": "There was an error when retrieving hint #",
+        "buyError": "There was an error when buying hint #"
+      },
+      "output": {
+        "console": "Console",
+        "debug": "Debug"
+      },
+      "playground": {
+        "notFound": "Content not found"
+      },
+      "toolbar": {
+        "submit": "Submit",
+        "resetCode": "Reset code",
+        "submitSuccess": "Submission successful, all test have passed",
+        "submitError": "Request failed, please try again later",
+        "testsPassed": "tests passed, fix all tests cases to pass this exercise"
+      },
+      "validator": {
+        "#": "#",
+        "run": "Run",
+        "input": "Input :",
+        "expected": "Expected :",
+        "hidden": "(hidden test)"
+      },
+      "validators": {
+        "#": "#",
+        "title": "Tests",
+        "passed": "% passed",
+        "runAll": "Run all",
+        "runAllError": "Unexpected result from the server"
+      }
+    },
+    "team": {
+      "buttonModalDelete": {
+        "title": "Delete team",
+        "message": "Are you sure you want to delete this team?",
+        "promoteInstead": "If you just want to leave this team, you can promote another member as captain instead.",
+        "actionUndone": "This action can't be undone",
+        "delete": "Delete",
+        "deleteSuccess": "Team deleted successfully",
+        "deleteError": "There was an error when deleting team"
+      },
+      "buttonModalLeave": {
+        "title": "Leave a team",
+        "message": "Are you sure you want to leave this team?",
+        "edit": "Edit",
+        "delete": "Delete",
+        "leave": "Leave",
+        "leaveSuccess": "You have left the team",
+        "leaveError": "There was an error when leaving team"
+      },
+      "contextualMenu": {
+        "info": "Information",
+        "edit": "Edit",
+        "remove": "Remove"
+      },
+      "contextualMenuDelete": {
+        "delete": "Delete"
+      },
+      "contextualMenuLeaderboard": {
+        "info": "Information",
+        "invite": "Invite",
+        "add": "Add",
+        "title": "Invite a member",
+        "inviteMessage": "Invite a member to join your team",
+        "selectLabel": "Team",
+        "noTeam": "No team found",
+        "noTeamSelected": "Please select a team",
+        "addMemberSuccess": "Member added successfully",
+        "addMemberError": "There was an error when adding member",
+        "fetchError": "Failed to fetch teams from server"
+      },
+      "contextualMenuUser": {
+        "info": "Information"
+      },
+      "menu": {
+        "polypoints": "Polypoints",
+        "rank": "Rank",
+        "unknownRank": "Unknown rank",
+        "members": "Members",
+        "edit": "Edit"
+      },
+      "modalDeleteUser": {
+        "title": "Remove a user",
+        "message": "Are you sure you want to remove this user?",
+        "actionUndone": "This action can't be undone",
+        "remove": "Remove",
+        "deleteSuccess": "User removed successfully",
+        "deleteError": "There was an error when removing user"
+      },
+      "teamCreationPanel": {
+        "title": "New team",
+        "information": "Information",
+        "name": "Team name",
+        "description": "Team description",
+        "save": "SAVE",
+        "reset": "Reset",
+        "creationSuccess": "Team created successfully",
+        "creationError": "There was an error when creating team",
+        "nameTooShort": "Name must be at least 3 characters long",
+        "nameTooLong": "Name must be at most 20 characters long",
+        "descriptionTooLong": "Description must be at most 500 characters long"
+      },
+      "teamEditionPanel": {
+        "title": "Team Editor",
+        "information": "Information",
+        "contentName": "Name",
+        "contentDescription": "Description",
+        "contentMembers": "Members",
+        "saveButton": "SAVE",
+        "resetButton": "Reset",
+        "saveSuccess": "Team updated successfully",
+        "saveError": "There was an error when updating team",
+        "nameTooLong": "Name must be at most 20 characters long",
+        "nameTooShort": "Name must be at least 3 characters long",
+        "descriptionTooLong": "Description must be at most 500 characters long",
+        "descriptionTooShort": "Description must be at least 3 characters long"
+      },
+      "teamPanel": {
+        "title": "Team",
+        "members": "Members"
+      }
+    }
+  },
+  "pages": {
+    "account": {
+      "id": {
+        "title": "Account Profile"
+      },
+      "password": {
+        "title": "Account Password"
+      },
+      "profile": {
+        "title": "Account Profile"
+      },
+      "settings": {
+        "title": "Account Settings"
+      },
+      "teams": {
+        "title": "Account Teams"
+      }
+    },
+    "content": {
+      "edit": {
+        "id": {
+          "title": "Edit content",
+          "fetchError": "Failed to fetch content from server",
+          "saveError": "Failed to update content on server",
+          "saveSuccess": "Content updated successfully"
+        },
+        "index": {
+          "title": "New content",
+          "saveError": "Failed to create content on server",
+          "saveSuccess": "Content created successfully"
+        }
+      },
+      "index": {
+        "title": "Contents",
+        "filters": "Filters",
+        "reset": "Reset"
+      }
+    },
+    "email": {
+      "verification": {
+        "title": "Verify your email",
+        "progress": "Verification in progress",
+        "success": "Email verified successfully",
+        "failed": "Failed to verify email",
+        "home": "Go to home page",
+        "signIn": "Sign in"
+      }
+    },
+    "index": {
+      "homeTitle": "PolyCode",
+      "landingTitle": "Welcome to PolyCode"
+    },
+    "leaderboard": {
+      "title": "Leaderboard",
+      "noUsers": "No users found",
+      "fetchError": "Failed to fetch users from server"
+    },
+    "module": {
+      "edit": {
+        "id": {
+          "title": "Edit module"
+        },
+        "index": {
+          "title": "New module"
+        }
+      },
+      "path": {
+        "modulesHere": "Display module here"
+      },
+      "index": {
+        "title": "Modules",
+        "filters": "Filters",
+        "resetButton": "Reset"
+      }
+    },
+    "signIn": {
+      "title": "Sign In to PolyCode",
+      "email": "Email",
+      "password": "Password",
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "noAccountQuestion": "Don't have an account?",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Email is invalid",
+      "passwordRequired": "Password is required",
+      "invalidCreditentials": "Invalid credentials",
+      "unexpectedError": "Unexpected error"
+    },
+    "signUp": {
+      "title": "SignUp to PolyCode",
+      "username": "Username",
+      "email": "Email",
+      "password": "Password",
+      "confirmPassword": "Confirm Password",
+      "overThirteen": "I am over 13 years old",
+      "readTerms": "I have read and agree to the",
+      "termsOfService": "Terms of Service",
+      "signIn": "Sign in",
+      "signUp": "Sign up",
+      "haveAccountQuestion": "Already have an account?",
+      "emailEmpty": "Email is empty",
+      "usernameEmpty": "Username is empty",
+      "passwordEmpty": "Password is empty",
+      "passwordsMismatch": "Passwords don't match",
+      "mustAcceptTOS": "You must accept the Terms of Service",
+      "errorInFields": "There is at least one error in the fields",
+      "mustBeOverThirteen": "You must be over 13 years old",
+      "userAlreadyExists": "User already exists",
+      "signInError": "There was an error when signing in",
+      "signUpError": "Unable to sign up",
+      "unexpectedError": "Unexpected error"
+    },
+    "team": {
+      "edit": {
+        "id": {
+          "title": "Edit team"
+        },
+        "fetchError": "Failed to fetch team from server"
+      },
+      "id": {
+        "title": "Team",
+        "fetchError": "Failed to fetch team from server"
+      },
+      "create": {
+        "title": "New team"
+      },
+      "index": {
+        "title": "Teams",
+        "noTeams": "No teams found",
+        "fetchError": "Unable to fetch teams from server"
+      }
+    },
+    "404": {
+      "title": "Page not found",
+      "message": "Go in safer place",
+      "button": "HOME"
+    },
+    "terms": {
+      "title": "Terms of Service"
+    }
+  },
+  "error": {
+    "fetch": "There was an error when retrieving data from server"
+  }
+}

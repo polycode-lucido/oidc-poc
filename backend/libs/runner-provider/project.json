@@ -1,0 +1,33 @@
+{
+  "root": "libs/runner-provider",
+  "sourceRoot": "libs/runner-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/runner-provider",
+        "tsConfig": "libs/runner-provider/tsconfig.lib.json",
+        "packageJson": "libs/runner-provider/package.json",
+        "main": "libs/runner-provider/src/index.ts",
+        "assets": ["libs/runner-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/runner-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/runner-provider"],
+      "options": {
+        "jestConfig": "libs/runner-provider/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

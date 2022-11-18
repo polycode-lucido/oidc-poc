@@ -1,0 +1,33 @@
+{
+  "root": "libs/auth-consumer",
+  "sourceRoot": "libs/auth-consumer/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/auth-consumer",
+        "tsConfig": "libs/auth-consumer/tsconfig.lib.json",
+        "packageJson": "libs/auth-consumer/package.json",
+        "main": "libs/auth-consumer/src/index.ts",
+        "assets": ["libs/auth-consumer/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/auth-consumer/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/auth-consumer"],
+      "options": {
+        "jestConfig": "libs/auth-consumer/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

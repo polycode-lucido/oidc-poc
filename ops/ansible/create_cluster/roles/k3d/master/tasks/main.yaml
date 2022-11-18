@@ -1,0 +1,38 @@
+- name: Download & install k3d
+  ansible.builtin.shell:
+    cmd: curl -s https://raw.githubusercontent.com/k3d-io/k3d/main/install.sh | bash
+
+- name: Ensures /k3d dir exists
+  file: path=/k3d state=directory
+
+- name: Copy files
+  copy:
+    src: "{{ playbook_dir }}/k3d_config_{{ deployment_environment }}.yaml"
+    dest: "/k3d/k3d_config_{{ deployment_environment }}.yaml"
+
+- name: Create cluster
+  ansible.builtin.shell:
+    cmd: k3d cluster create {{ deployment_environment }}-polycode {{ (deployment_environment == 'prod') | ternary('--network host', '') }} --config /k3d/k3d_config_{{ deployment_environment }}.yaml
+
+- name: Create isolated kubeconfig for the clsuter
+  ansible.builtin.shell:
+    cmd: k3d kubeconfig get {{ deployment_environment }}-polycode > /k3d/{{ deployment_environment }}-polycode
+
+- name: Copy kubeconfig to ~.kube/
+  ansible.builtin.fetch:
+    src: /k3d/{{ deployment_environment }}-polycode
+    dest: ~/.kube/polycode_config_{{ deployment_environment }}
+    flat: yes
+
+- name: Fetch and store cluster token
+  block:
+    - name: Get cluster token
+      community.docker.docker_container_exec:
+        container: k3d-{{ deployment_environment }}-polycode-server-0
+        command: /bin/sh -c "cat /var/lib/rancher/k3s/server/token"
+      register: result
+
+    - name: Store master token
+      set_fact:
+        cluster_token: "{{ result.stdout }}"
+  when: deployment_environment == 'prod'

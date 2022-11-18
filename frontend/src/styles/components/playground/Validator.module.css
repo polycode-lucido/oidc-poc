@@ -1,0 +1,38 @@
+.head {
+  display: flex;
+  flex-direction: row;
+  /* border-radius: 6px; */
+  /* padding-left: 0.5rem; */
+}
+
+.autoMargin {
+  margin: auto;
+}
+
+.expandButtonContainer {
+  width: 2.5rem;
+  height: fit-content;
+  margin: auto;
+  overflow: hidden;
+  height: 2.5rem;
+}
+
+.expandButton {
+  transition: transform 0.2s ease-in-out;
+  margin: auto;
+}
+
+.outputPre {
+  margin: 0;
+  padding-left: 1rem;
+}
+
+.description {
+  margin: 0;
+  padding: 0;
+}
+.clickableSummary {
+  flex-grow: 1;
+  display: flex;
+  cursor: pointer;
+}

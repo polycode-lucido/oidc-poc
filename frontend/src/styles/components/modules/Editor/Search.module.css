@@ -1,0 +1,16 @@
+.searchField {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.spacer {
+  width: 2rem;
+}
+.searchResults {
+  max-height: 10rem;
+  overflow-y: auto;
+}
+.searchInput {
+  flex-grow: 1;
+}

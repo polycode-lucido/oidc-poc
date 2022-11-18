@@ -1,0 +1,33 @@
+{
+  "root": "libs/runner-consumer",
+  "sourceRoot": "libs/runner-consumer/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/runner-consumer",
+        "tsConfig": "libs/runner-consumer/tsconfig.lib.json",
+        "packageJson": "libs/runner-consumer/package.json",
+        "main": "libs/runner-consumer/src/index.ts",
+        "assets": ["libs/runner-consumer/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/runner-consumer/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/runner-consumer"],
+      "options": {
+        "jestConfig": "libs/runner-consumer/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

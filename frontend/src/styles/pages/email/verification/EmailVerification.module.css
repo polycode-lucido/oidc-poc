@@ -1,0 +1,11 @@
+.container {
+  max-width: 40rem;
+  margin: auto;
+  margin-top: 6rem;
+  display: flex;
+}
+
+.button {
+  margin: auto;
+  margin-top: 1rem;
+}

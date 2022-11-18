@@ -1,0 +1,33 @@
+{
+  "root": "libs/mailer-provider",
+  "sourceRoot": "libs/mailer-provider/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/mailer-provider",
+        "tsConfig": "libs/mailer-provider/tsconfig.lib.json",
+        "packageJson": "libs/mailer-provider/package.json",
+        "main": "libs/mailer-provider/src/index.ts",
+        "assets": ["libs/mailer-provider/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/mailer-provider/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/mailer-provider"],
+      "options": {
+        "jestConfig": "libs/mailer-provider/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

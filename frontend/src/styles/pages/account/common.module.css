@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+  padding-top: 30px;
+}
+
+.contentContainer {
+  display: flex;
+  flex-grow: 1;
+}
+
+.divider {
+  height: 75vh;
+  margin-top: 40px;
+}
+
+@media (max-width: 768px) {
+  .container {
+    padding: 0;
+  }
+
+  .contentContainer {
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+  }
+
+  .divider {
+    height: 0;
+    width: 75vw;
+    margin: 0 auto;
+    border-bottom-width: thin;
+  }
+}

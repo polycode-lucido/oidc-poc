@@ -1,0 +1,17 @@
+.head {
+  display: flex;
+}
+
+.expandButton {
+  transition: transform 0.2s ease-in-out;
+  margin: auto;
+}
+
+.buyContainer {
+  text-align: center;
+}
+
+.polypoint {
+  width: 1.2rem;
+  height: 1.2rem;
+}

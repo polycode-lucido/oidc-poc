@@ -1,0 +1,17 @@
+.innerContainer {
+  margin: 40px auto;
+  align-items: center;
+  width: 100%;
+  max-width: 60rem;
+}
+
+.userList {
+  width: 100%;
+}
+
+.staticRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 60rem;
+}

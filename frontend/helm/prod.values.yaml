@@ -1,0 +1,27 @@
+# Prod values for frontend.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+replicaCount: 3
+
+env:
+  - name: PUBLIC_API_URL
+    value: https://api.polycode.do-2021.fr
+
+ingress:
+  hosts:
+    - host: www.polycode.do-2021.fr
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+    - host: polycode.do-2021.fr
+      paths:
+        - path: /
+          pathType: ImplementationSpecific
+  tls:
+    - secretName: frontend-www-tls
+      hosts:
+        - www.polycode.do-2021.fr
+    - secretName: frontend-tls
+      hosts:
+        - polycode.do-2021.fr

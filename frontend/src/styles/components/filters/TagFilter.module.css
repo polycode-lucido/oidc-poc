@@ -1,0 +1,33 @@
+.container {
+  /* height: 150px; */
+  margin: 15px 0;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.innerContainer .titleContainer {
+  display: flex;
+  justify-content: center;
+}
+
+.titleContainer .title {
+  font-size: 1.3rem;
+  padding-top: 5px;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  justify-content: center;
+  margin-left: 5px;
+}
+
+.formGroup .formGroupLabel {
+  margin: 0;
+  width: 100%;
+}

@@ -1,0 +1,33 @@
+{
+  "root": "libs/submission",
+  "sourceRoot": "libs/submission/src",
+  "targets": {
+    "build": {
+      "executor": "@nrwl/js:tsc",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "outputPath": "dist/libs/submission",
+        "tsConfig": "libs/submission/tsconfig.lib.json",
+        "packageJson": "libs/submission/package.json",
+        "main": "libs/submission/src/index.ts",
+        "assets": ["libs/submission/*.md"]
+      }
+    },
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["libs/submission/**/*.ts"]
+      }
+    },
+    "test": {
+      "executor": "@nrwl/jest:jest",
+      "outputs": ["coverage/libs/submission"],
+      "options": {
+        "jestConfig": "libs/submission/jest.config.ts",
+        "passWithNoTests": true
+      }
+    }
+  },
+  "tags": []
+}

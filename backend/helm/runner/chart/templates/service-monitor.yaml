@@ -1,0 +1,13 @@
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: {{ include "backend.fullname" . }}
+  labels:
+    monitoring.coreos.com/name: {{ include "backend.fullname" . }}
+spec:
+  selector:
+    matchLabels:
+      monitoring.coreos.com/name: {{ include "backend.fullname" . }}
+  endpoints:
+    - targetPort: http
+      interval: 15s

@@ -1,0 +1,28 @@
+import { HttpService } from '@nestjs/axios';
+import { Injectable } from '@nestjs/common';
+import { to500 } from '@polycode/to';
+import { AxiosResponse } from 'axios';
+import { firstValueFrom } from 'rxjs';
+import { RunnerExecutionResults, RunnerWorkload } from './types';
+
+@Injectable()
+export class RunnerConsumerService {
+  constructor(private readonly httpService: HttpService) {}
+
+  /**
+   * It takes a RunnerWorkload object, sends it to the Runner API, and returns the RunnerExecutionResults
+   * object
+   * @param {RunnerWorkload} runnerWorkload - RunnerWorkload
+   * @returns AxiosResponse<RunnerExecutionResults>
+   */
+  run(runnerWorkload: RunnerWorkload): Promise<AxiosResponse> {
+    return to500(
+      firstValueFrom(
+        this.httpService.post<RunnerExecutionResults>(
+          `${process.env.RUNNER_API_URL}/run`,
+          runnerWorkload
+        )
+      )
+    );
+  }
+}
