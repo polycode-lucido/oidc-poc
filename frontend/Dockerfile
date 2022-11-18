@@ -1,4 +1,8 @@
 FROM node:16-alpine
+
+LABEL MAINTAINER="Simon LUCIDO <simon.lucido@etu.umontpellier.fr>"
+LABEL APP="polycode-frontend"
+
 WORKDIR /build
 
 # Install dependencies

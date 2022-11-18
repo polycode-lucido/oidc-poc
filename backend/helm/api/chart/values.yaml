@@ -3,11 +3,9 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: docker.repo.nexus.polycode.do-2021.fr/do-polycode/backend/api
+  repository: ghcr.io/polycode-lucido/oidc-poc/api
   pullPolicy: IfNotPresent
-
-imagePullSecrets:
-  - name: registry-credentials
+  tag: latest
 
 fullnameOverride: 'api'
 

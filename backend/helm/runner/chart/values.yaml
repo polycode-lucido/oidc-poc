@@ -3,11 +3,10 @@
 # Declare variables to be passed into your templates.
 
 image:
-  repository: docker.repo.nexus.polycode.do-2021.fr/do-polycode/backend/runner
+  repository: ghcr.io/polycode-lucido/oidc-poc/runner
   pullPolicy: IfNotPresent
+  tag: latest
 
-imagePullSecrets:
-  - name: registry-credentials
 
 fullnameOverride: 'runner'
 

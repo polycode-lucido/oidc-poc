@@ -1,6 +1,6 @@
 FROM node:16-alpine
 
-LABEL MAINTAINER="iverly <contact@polycode.dopolytech.fr>"
+LABEL MAINTAINER="Simon LUCIDO <simon.lucido@etu.umontpellier.fr>"
 LABEL APP="polycode-api"
 
 WORKDIR /usr/app

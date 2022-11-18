@@ -6,22 +6,22 @@ replicaCount: 3
 
 env:
   - name: PUBLIC_API_URL
-    value: https://api.polycode.do-2021.fr
+    value: https://api.polycode.simonlucido.com
 
 ingress:
   hosts:
-    - host: www.polycode.do-2021.fr
+    - host: www.polycode.simonlucido.com
       paths:
         - path: /
           pathType: ImplementationSpecific
-    - host: polycode.do-2021.fr
+    - host: polycode.simonlucido.com
       paths:
         - path: /
           pathType: ImplementationSpecific
   tls:
     - secretName: frontend-www-tls
       hosts:
-        - www.polycode.do-2021.fr
+        - www.polycode.simonlucido.com
     - secretName: frontend-tls
       hosts:
-        - polycode.do-2021.fr
+        - polycode.simonlucido.com
