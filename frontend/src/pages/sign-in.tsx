@@ -17,10 +17,11 @@ export default function SignIn() {
 
   // if the user is logged in, redirect to the home page
   if (user) router.push('/');
-  if (!code)
+  if (!code) {
     router.push(
-      'http://localhost:8080/realms/polycode/protocol/openid-connect/auth?client_id=polycode-api&response_type=code&scope=profile&redirect_uri=http%3A%2F%2Flocalhost%3A3001%2Fsign-in'
+      `${process.env.NEXT_PUBLIC_KEYCLOAK_URL}/auth?client_id=${process.env.NEXT_PUBLIC_KEYCLOAK_CLIENT_ID}&response_type=code&scope=profile&redirect_uri=${process.env.NEXT_PUBLIC_KEYCLOAK_REDIRECT_SIGN_IN_URI}`
     );
+  }
 
   // if there is a code, try to get tokens
   useEffect(() => {

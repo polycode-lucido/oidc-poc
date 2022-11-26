@@ -32,7 +32,7 @@ export default function LandingPage() {
         {i18n.t('components.home.landingPage.manifesto')}
       </Typography>
 
-      <Link href="/sign-up" passHref>
+      <Link href="/sign-in" passHref>
         <Button variant="contained" size="large" className={styles.startButton}>
           {i18n.t('components.home.landingPage.start')}
         </Button>
