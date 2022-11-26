@@ -3,9 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { to500 } from '@polycode/to';
 import { firstValueFrom } from 'rxjs';
 import { RunnerExecutionResults, RunnerWorkload } from './types';
-import { AxiosResponse as _AxiosResponse } from '@nestjs/axios/node_modules/axios';
 
-export type AxiosResponse = _AxiosResponse;
 @Injectable()
 export class RunnerConsumerService {
   constructor(private readonly httpService: HttpService) {}
