@@ -33,16 +33,19 @@ export class UserEmail extends Model {
   })
   email: string;
 
+  @BelongsTo(() => User, {
+    foreignKey: 'user_id',
+    onDelete: 'CASCADE',
+  })
+  user: User;
+
   @ForeignKey(() => User)
   @Column({
-    field: 'user_id',
     type: DataType.UUID,
+    field: 'user_id',
     allowNull: false,
   })
   userId: string;
-
-  @BelongsTo(() => User, 'user_id')
-  declare user: User;
 
   @Exclude()
   @Unique
@@ -53,9 +56,9 @@ export class UserEmail extends Model {
 
   @Column({
     type: DataType.BOOLEAN,
+    field: 'is_verified',
     defaultValue: false,
     allowNull: false,
-    field: 'is_verified',
   })
   isVerified: boolean;
 }

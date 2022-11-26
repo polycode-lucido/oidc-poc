@@ -21,18 +21,15 @@ import { emailResponseSchema } from './templates/schemas/responses/email.respons
 import { createEmailBodySchema } from './templates/schemas/bodies/email.body.create.schema';
 import { UserId } from '@polycode/decorator';
 import { GenericSequelizeController } from '@polycode/generic';
-import { Authorize } from '@polycode/auth-consumer';
-import {
-  UserEmailCreateSelfAuthorization,
-  UserEmailDeleteSelfAuthorize,
-  UserEmailReadSelfAuthorization,
-} from './templates/policies';
 import { userIdParamSchema } from '../templates/schemas/params/userId.param.schema';
 import { UserEmail } from '@polycode/shared';
 import { UserService } from '../user.service';
+import { Resource, Scopes, Public } from 'nest-keycloak-connect';
+import { ParseMePipe } from '../validation';
 
 @Controller('user')
 @ApiTags('User')
+@Resource('user_email')
 export class UserEmailController extends GenericSequelizeController<
   UserEmail,
   CreateEmailDto,
@@ -60,8 +57,8 @@ export class UserEmailController extends GenericSequelizeController<
     },
   })
   @Get(':userId/email')
-  @Authorize(UserEmailReadSelfAuthorization)
-  async get(@UserId() userId: string) {
+  @Scopes('read')
+  async get(@UserId(ParseMePipe) userId: string) {
     const emails = await this.userEmailService.findAllByUserId(userId);
     return this.userEmailService.format(emails);
   }
@@ -86,8 +83,11 @@ export class UserEmailController extends GenericSequelizeController<
     ],
   })
   @Post(':userId/email')
-  @Authorize(UserEmailCreateSelfAuthorization)
-  async create(@UserId() userId: string, @Body() emailDto: CreateEmailDto) {
+  @Scopes('create')
+  async create(
+    @UserId(ParseMePipe) userId: string,
+    @Body() emailDto: CreateEmailDto
+  ) {
     const user = await this.userService._findById(userId);
     const email = await this.userEmailService.create(emailDto, user);
 
@@ -111,7 +111,7 @@ export class UserEmailController extends GenericSequelizeController<
   })
   @Delete(':userId/email/:emailId')
   @HttpCode(204)
-  @Authorize(UserEmailDeleteSelfAuthorize)
+  @Scopes('delete')
   delete(@Param('emailId') emailId: string) {
     return this._deleteById(emailId);
   }
@@ -133,6 +133,7 @@ export class UserEmailController extends GenericSequelizeController<
   })
   @Post('email/validate/:verificationToken')
   @HttpCode(204)
+  @Public()
   validate(@Param('verificationToken') token: string) {
     return this.userEmailService.validateEmail(token);
   }
@@ -154,6 +155,7 @@ export class UserEmailController extends GenericSequelizeController<
     ],
   })
   @Post('email/regenerate-token/:emailId')
+  @Public()
   @HttpCode(204)
   async regenerateToken(@Param('emailId') emailId: string) {
     await this.userEmailService.regenerateValidationToken(emailId);

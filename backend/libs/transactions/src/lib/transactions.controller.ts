@@ -3,16 +3,16 @@ import { ApiTags } from '@nestjs/swagger';
 import { Request as RequestExpress } from 'express'; //conflicts with Request in @nestjs/common
 
 import { ApiRouteAuthenticated } from '@polycode/docs';
-import { GenericSequelizeController, GenericRoute } from '@polycode/generic';
+import { GenericRoute, GenericSequelizeController } from '@polycode/generic';
 
 import { Transaction } from '@polycode/shared';
-import { TransactionsService } from './transactions.service';
 import { getResponseSchema } from './templates/schema/response/transaction.response.get.schema';
-import { Authorize } from '@polycode/auth-consumer';
-import { TransactionReadAllAuthorize } from './templates/policies';
+import { TransactionsService } from './transactions.service';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 
 @Controller('transactions')
 @ApiTags('Transactions')
+@Resource('transaction')
 export class TransactionsController extends GenericSequelizeController<
   Transaction,
   undefined,
@@ -37,7 +37,7 @@ export class TransactionsController extends GenericSequelizeController<
     pagination: true,
   })
   @Get()
-  @Authorize(TransactionReadAllAuthorize)
+  @Scopes('read')
   @GenericRoute()
   async getAll(@Req() request: RequestExpress) {
     return this._getAllAndCount(request);

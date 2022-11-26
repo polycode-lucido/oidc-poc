@@ -1,36 +1,30 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
-  Param,
+  Controller,
   Delete,
+  Get,
   HttpCode,
-  Request,
+  Param,
+  Patch,
+  Post,
   Req,
+  Request,
 } from '@nestjs/common';
+import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
+import { ApiRouteAuthenticated } from '@polycode/docs';
+import { QueryOptions } from '@polycode/query-manager';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 import { ModuleService } from './module.service';
 import { CreateModuleDto } from './templates/dto/create-module.dto';
 import { UpdateModuleDto } from './templates/dto/update-module.dto';
-import { ApiRouteAuthenticated } from '@polycode/docs';
-import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
-import { moduleIdParamSchema } from './templates/schemas/module/params/moduleId.param.schema';
-import { moduleResponseSchema } from './templates/schemas/module/responses/module.response.schema';
 import { createModuleBodySchema } from './templates/schemas/module/bodies/module.body.create.schema';
 import { patchModuleBodySchema } from './templates/schemas/module/bodies/module.body.patch.schema';
-import {
-  ModuleCreateAuthorization,
-  ModuleReadOneAuthorization,
-  ModuleReadAllAuthorization,
-  ModuleReadUpdateOneAuthorization,
-  ModuleDeleteOneAuthorization,
-} from './templates/policies';
-import { Authorize } from '@polycode/auth-consumer';
-import { QueryOptions } from '@polycode/query-manager';
+import { moduleIdParamSchema } from './templates/schemas/module/params/moduleId.param.schema';
+import { moduleResponseSchema } from './templates/schemas/module/responses/module.response.schema';
 
 @ApiTags('Module')
 @Controller('module')
+@Resource('module')
 export class ModuleController {
   constructor(private readonly moduleService: ModuleService) {}
 
@@ -48,7 +42,7 @@ export class ModuleController {
     },
   })
   @Post()
-  @Authorize(ModuleCreateAuthorization)
+  @Scopes('create')
   async create(@Body() createModuleDto: CreateModuleDto, @Request() request) {
     const module = await this.moduleService.create(
       createModuleDto,
@@ -96,7 +90,7 @@ export class ModuleController {
     },
   })
   @Get()
-  @Authorize(ModuleReadAllAuthorization)
+  @Scopes('read')
   async findAll(@Req() request: QueryOptions) {
     const filter = {
       ...Object.keys(request?.filter?.keys || []).reduce(
@@ -162,7 +156,7 @@ export class ModuleController {
     ],
   })
   @Get(':moduleId')
-  @Authorize(ModuleReadOneAuthorization)
+  @Scopes('read')
   async findOne(@Param('moduleId') id: string) {
     const module = await this.moduleService.findOneById(id);
     return this.moduleService.format(module);
@@ -188,7 +182,7 @@ export class ModuleController {
     ],
   })
   @Patch(':moduleId')
-  @Authorize(ModuleReadUpdateOneAuthorization)
+  @Scopes('update')
   async update(
     @Param('moduleId') id: string,
     @Body() updateModuleDto: UpdateModuleDto
@@ -208,7 +202,7 @@ export class ModuleController {
     },
   })
   @Delete(':moduleId')
-  @Authorize(ModuleDeleteOneAuthorization)
+  @Scopes('delete')
   @HttpCode(204)
   async remove(@Param('moduleId') id: string) {
     await this.moduleService.remove(id);

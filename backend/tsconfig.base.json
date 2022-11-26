@@ -21,7 +21,6 @@
       "@polycode/transactions": ["libs/transactions/src/index.ts"],
       "@polycode/auth-consumer": ["libs/auth-consumer/src/index.ts"],
       "@polycode/auth-provider": ["libs/auth-provider/src/index.ts"],
-      "@polycode/casl": ["libs/casl/src/index.ts"],
       "@polycode/component": ["libs/component/src/index.ts"],
       "@polycode/content": ["libs/content/src/index.ts"],
       "@polycode/decorator": ["libs/decorator/src/index.ts"],
@@ -43,7 +42,6 @@
       "@polycode/test": ["libs/test/src/index.ts"],
       "@polycode/to": ["libs/to/src/index.ts"],
       "@polycode/user": ["libs/user/src/index.ts"],
-      "@polycode/validation": ["libs/validation/src/index.ts"],
       "@polycode/validator": ["libs/validator/src/index.ts"]
     }
   },

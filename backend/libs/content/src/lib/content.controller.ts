@@ -10,26 +10,20 @@ import {
   Req,
 } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiTags } from '@nestjs/swagger';
-import { Authorize } from '@polycode/auth-consumer';
 import { ApiRouteAuthenticated } from '@polycode/docs';
 import { QueryOptions } from '@polycode/query-manager';
 import { ContentService } from './content.service';
 import { CreateContentDto } from './templates/dtos/create-content.dto';
 import { UpdateContentDto } from './templates/dtos/update-content.dto';
-import {
-  ContentCreateAuthorization,
-  ContentDeleteOneAuthorize,
-  ContentReadAllAuthorize,
-  ContentReadOneAuthorize,
-  ContentReadUpdateOneAuthorize,
-} from './templates/policies';
 import { createBodySchema } from './templates/schemas/body/content.body.create.schema';
 import { patchBodySchema } from './templates/schemas/body/content.body.patch.schema';
 import { contentIdParamSchema } from './templates/schemas/params/content.param.schema';
 import { contentResponseSchema } from './templates/schemas/response/content.response.schema';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 
 @Controller('content')
 @ApiTags('Content')
+@Resource('content')
 export class ContentController {
   constructor(private readonly contentService: ContentService) {}
 
@@ -47,7 +41,7 @@ export class ContentController {
     },
   })
   @Post()
-  @Authorize(ContentCreateAuthorization)
+  @Scopes('create')
   async create(@Body() createContentDto: CreateContentDto) {
     return this.contentService.format(
       await this.contentService.create(createContentDto)
@@ -84,7 +78,7 @@ export class ContentController {
     },
   })
   @Get()
-  @Authorize(ContentReadAllAuthorize)
+  @Scopes('read')
   async findAll(@Req() request: QueryOptions) {
     const filter = {
       ...Object.keys(request?.filter?.keys || []).reduce(
@@ -150,7 +144,7 @@ export class ContentController {
     ],
   })
   @Get(':contentId')
-  @Authorize(ContentReadOneAuthorize)
+  @Scopes('read')
   async findOne(@Param('contentId') id: string) {
     return this.contentService.format(await this.contentService.findOne(id));
   }
@@ -175,7 +169,7 @@ export class ContentController {
     ],
   })
   @Put(':contentId')
-  @Authorize(ContentReadUpdateOneAuthorize)
+  @Scopes('update')
   async update(
     @Param('contentId') id: string,
     @Body() updateContentDto: UpdateContentDto
@@ -201,7 +195,7 @@ export class ContentController {
     ],
   })
   @Delete(':contentId')
-  @Authorize(ContentDeleteOneAuthorize)
+  @Scopes('delete')
   @HttpCode(204)
   async remove(@Param('contentId') id: string) {
     return this.contentService.remove(id);

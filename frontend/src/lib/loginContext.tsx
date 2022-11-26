@@ -1,3 +1,4 @@
+import { useRouter } from 'next/router';
 import React, {
   createContext,
   useCallback,
@@ -6,14 +7,13 @@ import React, {
   useMemo,
   useState,
 } from 'react';
-import { useRouter } from 'next/router';
-import { getUserEmails, User, UserEmail } from './api/user';
 import {
   Credentials,
-  RefreshUser,
-  fetchApiWithAuth,
   CredentialsManager,
+  fetchApiWithAuth,
+  RefreshUser,
 } from './api/api';
+import { getUserEmails, User, UserEmail } from './api/user';
 
 /*
   Login context.

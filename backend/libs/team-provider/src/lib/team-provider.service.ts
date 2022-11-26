@@ -6,16 +6,11 @@ import { is404, is409 } from '@polycode/to';
 import { CreateTeamDto } from './template/dtos/create-team.dto';
 import { GenericSequelizeService } from '@polycode/generic';
 import { Team, TeamMemberRole, TeamMembers, User } from '@polycode/shared';
-import { AuthConsumerService, IRole } from '@polycode/auth-consumer';
-import { Action, ResourceName } from '@polycode/casl';
 import { UpdateTeamDto } from './template/dtos/update-user.dto';
 
 @Injectable()
 export class TeamProviderService extends GenericSequelizeService<Team> {
-  constructor(
-    readonly sequelize: Sequelize,
-    readonly authConsumerService: AuthConsumerService
-  ) {
+  constructor(readonly sequelize: Sequelize) {
     super(Team, sequelize, {});
   }
 
@@ -67,7 +62,7 @@ export class TeamProviderService extends GenericSequelizeService<Team> {
       { validator: is409, ...QueryManager.skipTransaction(queryOptions) }
     );
 
-    let team = await this._create(
+    const team = await this._create(
       { ...createTeamDto },
       QueryManager.skipTransaction(queryOptions)
     );
@@ -79,52 +74,6 @@ export class TeamProviderService extends GenericSequelizeService<Team> {
         userId: creatorId,
         role: TeamMemberRole.CAPTAIN,
       },
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    const creatorRole: IRole = await this.authConsumerService.createRole(
-      this.getRoleNameForTeamCaptain(team.id),
-      `Role for captain of the team '${team.name}'`,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    await this.authConsumerService.createRolePolicy(
-      Action.Manage,
-      ResourceName.TEAM,
-      { id: team.id },
-      creatorRole.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    await this.authConsumerService.createRolePolicy(
-      Action.Manage,
-      ResourceName.TEAM_MEMBER,
-      { team_id: team.id },
-      creatorRole.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    await this.authConsumerService.addRoleToUser(
-      creatorId,
-      creatorRole.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    const membrRole: IRole = await this.authConsumerService.createRole(
-      this.getRoleNameForTeamMember(team.id),
-      `Role for members of the team '${team.name}'`,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    await this.authConsumerService.addRoleToUser(
-      creatorId,
-      membrRole.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    // Get the team but with the creator added
-    team = await this._findById(
-      team.id,
       QueryManager.skipTransaction(queryOptions)
     );
 
@@ -184,16 +133,6 @@ export class TeamProviderService extends GenericSequelizeService<Team> {
     await QueryManager.createTransaction(queryOptions, this.sequelize);
 
     const team = await this._findById(id, queryOptions);
-
-    await this.authConsumerService.deleteRoleByName(
-      this.getRoleNameForTeamCaptain(team.id),
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    await this.authConsumerService.deleteRoleByName(
-      this.getRoleNameForTeamMember(team.id),
-      QueryManager.skipTransaction(queryOptions)
-    );
 
     await this._deleteInstance(
       team,

@@ -1,17 +1,12 @@
 import { Module } from '@nestjs/common';
-import { TeamProviderController } from './team-provider.controller';
 import { SequelizeModule } from '@nestjs/sequelize';
-import { TeamProviderService } from './team-provider.service';
-import { AuthConsumerModule } from '@polycode/auth-consumer';
-import { TeamMembersModule } from './members/members.module';
 import { sequelizeTeamModels } from '@polycode/shared';
+import { TeamMembersModule } from './members/members.module';
+import { TeamProviderController } from './team-provider.controller';
+import { TeamProviderService } from './team-provider.service';
 
 @Module({
-  imports: [
-    SequelizeModule.forFeature(sequelizeTeamModels),
-    AuthConsumerModule,
-    TeamMembersModule,
-  ],
+  imports: [SequelizeModule.forFeature(sequelizeTeamModels), TeamMembersModule],
   controllers: [TeamProviderController],
   providers: [TeamProviderService],
   exports: [TeamProviderService],

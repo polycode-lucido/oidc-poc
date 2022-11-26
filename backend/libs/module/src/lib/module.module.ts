@@ -1,20 +1,45 @@
 import { Module } from '@nestjs/common';
-import { ModuleService } from './module.service';
-import { ModuleController } from './module.controller';
+import { APP_GUARD } from '@nestjs/core';
 import { MongooseModule } from '@nestjs/mongoose';
-import { ModuleSchema } from '@polycode/shared';
-import { AuthConsumerModule } from '@polycode/auth-consumer';
-import { UserModule } from '@polycode/user';
 import { ContentModule } from '@polycode/content';
+import { ModuleSchema } from '@polycode/shared';
+import { UserModule } from '@polycode/user';
+import {
+  AuthGuard,
+  KeycloakConnectModule,
+  ResourceGuard,
+  RoleGuard,
+} from 'nest-keycloak-connect';
+import { ModuleController } from './module.controller';
+import { ModuleService } from './module.service';
 
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: Module.name, schema: ModuleSchema }]),
-    AuthConsumerModule,
+    KeycloakConnectModule.register({
+      authServerUrl: 'http://localhost:8080',
+      realm: 'polycode',
+      clientId: 'polycode-api',
+      secret: '3jnsa9opY8drhWev983MujCmyFrp3aRP',
+    }),
     UserModule,
     ContentModule,
   ],
   controllers: [ModuleController],
-  providers: [ModuleService],
+  providers: [
+    ModuleService,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ResourceGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+  ],
 })
 export class ModuleModule {}

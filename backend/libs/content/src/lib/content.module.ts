@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ComponentModule } from '@polycode/component';
-import { ContentController } from './content.controller';
 import { Content, ContentSchema } from '@polycode/shared';
+import { ContentController } from './content.controller';
 import { ContentService } from './content.service';
-import { AuthConsumerModule } from '@polycode/auth-consumer';
 @Module({
   imports: [
     MongooseModule.forFeature([
@@ -14,7 +13,6 @@ import { AuthConsumerModule } from '@polycode/auth-consumer';
       },
     ]),
     ComponentModule,
-    AuthConsumerModule,
   ],
   controllers: [ContentController],
   providers: [ContentService],

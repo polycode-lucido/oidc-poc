@@ -1,40 +1,34 @@
 import {
-  Controller,
-  Get,
-  Post,
   Body,
-  Patch,
+  Controller,
   Delete,
+  Get,
   HttpCode,
+  Patch,
   Req,
 } from '@nestjs/common';
-import { Authorize } from '@polycode/auth-consumer';
-import { UserService } from './user.service';
-import { CreateUserDto } from './templates/dtos/create-user.dto';
-import { UpdateUserDto } from './templates/dtos/update-user.dto';
-import { ApiRoute, ApiRouteAuthenticated } from '@polycode/docs';
 import {
   ApiConflictResponse,
   ApiNotFoundResponse,
   ApiTags,
 } from '@nestjs/swagger';
-import { userResponseSchema } from './templates/schemas/responses/user.response.schema';
-import { createUserBodySchema } from './templates/schemas/bodies/user.body.create.schema';
-import { userIdParamSchema } from './templates/schemas/params/userId.param.schema';
-import { patchBodySchema } from './templates/schemas/bodies/user.body.patch.schema';
 import { UserId } from '@polycode/decorator';
-import { GenericRoute, GenericSequelizeController } from '@polycode/generic';
-import {
-  UserReadAllAuthorization,
-  UserReadSelfAuthorize,
-  UserReadUpdateSelfAuthorize,
-  UserDeleteSelfAuthorize,
-} from './templates/policies';
-import { getTeamsResponseSchema } from './templates/schemas/responses/get.team.response.schema';
+import { ApiRouteAuthenticated } from '@polycode/docs';
+import { GenericSequelizeController } from '@polycode/generic';
 import { User } from '@polycode/shared';
+import { ParseMePipe } from './validation';
+import { Resource, Scopes } from 'nest-keycloak-connect';
+import { CreateUserDto } from './templates/dtos/create-user.dto';
+import { UpdateUserDto } from './templates/dtos/update-user.dto';
+import { patchBodySchema } from './templates/schemas/bodies/user.body.patch.schema';
+import { userIdParamSchema } from './templates/schemas/params/userId.param.schema';
+import { getTeamsResponseSchema } from './templates/schemas/responses/get.team.response.schema';
+import { userResponseSchema } from './templates/schemas/responses/user.response.schema';
+import { UserService } from './user.service';
 
 @Controller('user')
 @ApiTags('User')
+@Resource('user')
 export class UserController extends GenericSequelizeController<
   User,
   CreateUserDto,
@@ -42,30 +36,6 @@ export class UserController extends GenericSequelizeController<
 > {
   constructor(private userService: UserService) {
     super(userService);
-  }
-
-  @ApiRoute({
-    operation: {
-      summary: 'Register/Create a new user',
-    },
-    body: {
-      schema: createUserBodySchema,
-    },
-    response: {
-      status: 201,
-      description: 'Returns the created user',
-      schema: userResponseSchema,
-    },
-    others: [
-      ApiConflictResponse({
-        description: 'Username or email already exists',
-      }),
-    ],
-  })
-  @Post()
-  @GenericRoute()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
   }
 
   @ApiRouteAuthenticated({
@@ -98,7 +68,7 @@ export class UserController extends GenericSequelizeController<
     },
   })
   @Get()
-  @Authorize(UserReadAllAuthorization)
+  @Scopes('read')
   findAll(@Req() request) {
     return this._getAllAndCount(request);
   }
@@ -120,8 +90,8 @@ export class UserController extends GenericSequelizeController<
     ],
   })
   @Get(':userId')
-  @Authorize(UserReadSelfAuthorize)
-  async findOne(@UserId() id: string) {
+  @Scopes('read')
+  async findOne(@UserId(ParseMePipe) id: string) {
     const user = await this.userService.findByIdWithRank(id);
 
     return this.userService.format(user);
@@ -150,8 +120,11 @@ export class UserController extends GenericSequelizeController<
     ],
   })
   @Patch(':userId')
-  @Authorize(UserReadUpdateSelfAuthorize)
-  update(@UserId() id: string, @Body() updateUserDto: UpdateUserDto) {
+  @Scopes('update')
+  update(
+    @UserId(ParseMePipe) id: string,
+    @Body() updateUserDto: UpdateUserDto
+  ) {
     return this._updateById(id, updateUserDto);
   }
 
@@ -171,9 +144,9 @@ export class UserController extends GenericSequelizeController<
     ],
   })
   @Delete(':userId')
-  @Authorize(UserDeleteSelfAuthorize)
+  @Scopes('delete')
   @HttpCode(204)
-  remove(@UserId() id: string) {
+  remove(@UserId(ParseMePipe) id: string) {
     return this._deleteById(id);
   }
 
@@ -194,10 +167,10 @@ export class UserController extends GenericSequelizeController<
       }),
     ],
   })
-  @Authorize(UserReadSelfAuthorize)
+  @Scopes('read')
   @Get('/:userId/teams')
   @HttpCode(200)
-  getUserTeams(@UserId() userId: string) {
+  getUserTeams(@UserId(ParseMePipe) userId: string) {
     return this.userService.getTeams(userId);
   }
 }

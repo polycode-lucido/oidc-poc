@@ -20,17 +20,11 @@ import { teamIdParamSchema } from './template/schemas/team/params/team-id.param.
 import { patchBodySchema } from './template/schemas/team/body/team.body.patch.schema';
 import { GenericRoute, GenericSequelizeController } from '@polycode/generic';
 import { Team } from '@polycode/shared';
-import { Authorize } from '@polycode/auth-consumer';
-import {
-  TeamCreateAuthorization,
-  TeamDeleteOneAuthorize,
-  TeamReadAllAuthorize,
-  TeamReadOneAuthorize,
-  TeamReadUpdateOneAuthorize,
-} from './template/policies';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 
 @Controller('team')
 @ApiTags('Team')
+@Resource('team')
 export class TeamProviderController extends GenericSequelizeController<
   Team,
   CreateTeamDto,
@@ -54,7 +48,7 @@ export class TeamProviderController extends GenericSequelizeController<
     },
   })
   @Post()
-  @Authorize(TeamCreateAuthorization)
+  @Scopes('create')
   @GenericRoute()
   create(@Body() createTeamDto: CreateTeamDto, @Req() request) {
     return this.teamProviderService.create(
@@ -92,7 +86,7 @@ export class TeamProviderController extends GenericSequelizeController<
     },
   })
   @Get()
-  @Authorize(TeamReadAllAuthorize)
+  @Scopes('read')
   findAll(@Req() request) {
     return this._getAllAndCount(request);
   }
@@ -109,7 +103,7 @@ export class TeamProviderController extends GenericSequelizeController<
     },
   })
   @Get(':teamId')
-  @Authorize(TeamReadOneAuthorize)
+  @Scopes('read')
   findOne(@Param('teamId') id: string) {
     return this._getById(id);
   }
@@ -129,7 +123,7 @@ export class TeamProviderController extends GenericSequelizeController<
     },
   })
   @Patch(':teamId')
-  @Authorize(TeamReadUpdateOneAuthorize)
+  @Scopes('update')
   @GenericRoute()
   async update(
     @Param('teamId') id: string,
@@ -150,7 +144,7 @@ export class TeamProviderController extends GenericSequelizeController<
   })
   @HttpCode(204)
   @Delete(':teamId')
-  @Authorize(TeamDeleteOneAuthorize)
+  @Scopes('delete')
   async delete(@Param('teamId') id: string) {
     await this.teamProviderService.delete(id);
   }

@@ -1,11 +1,11 @@
 import { ConflictException, Injectable, Logger } from '@nestjs/common';
-import { v4 as uuidv4 } from 'uuid';
-import { is409 } from '@polycode/to';
 import { MailerConsumerService } from '@polycode/mailer-consumer';
 import { QueryManager, QueryOptions } from '@polycode/query-manager';
-import { CreateEmailDto } from './templates/dtos/create-email.dto';
+import { is409 } from '@polycode/to';
 import { Sequelize } from 'sequelize-typescript';
-import { AuthConsumerService } from '@polycode/auth-consumer';
+import { v4 as uuidv4 } from 'uuid';
+import { CreateEmailDto } from './templates/dtos/create-email.dto';
+// import { AuthConsumerService } from '@polycode/auth-consumer';
 import { GenericSequelizeService } from '@polycode/generic';
 import { User, UserEmail } from '@polycode/shared';
 
@@ -13,7 +13,7 @@ import { User, UserEmail } from '@polycode/shared';
 export class UserEmailService extends GenericSequelizeService<UserEmail> {
   constructor(
     private readonly mailerConsumerService: MailerConsumerService,
-    private readonly authConsumerService: AuthConsumerService,
+    // private readonly authConsumerService: AuthConsumerService,
     readonly sequelize: Sequelize
   ) {
     super(UserEmail, sequelize, {
@@ -34,7 +34,7 @@ export class UserEmailService extends GenericSequelizeService<UserEmail> {
     email: string,
     queryOptions: QueryOptions = {}
   ): Promise<UserEmail> {
-    return this._findOne({ where: { email } }, queryOptions);
+    return this.model.findOne({ where: { email } });
   }
 
   /**
@@ -81,7 +81,6 @@ export class UserEmailService extends GenericSequelizeService<UserEmail> {
       {
         ...createEmailDto,
         userId: user.id,
-        isVerified: false,
         verificationToken: this.generateValidationToken(),
       },
       queryOptions
@@ -168,11 +167,11 @@ export class UserEmailService extends GenericSequelizeService<UserEmail> {
       QueryManager.skipTransaction(queryOptions)
     );
 
-    await this.authConsumerService.addRoleToUser(
-      email.userId,
-      process.env.DEFAULT_VALIDATED_ROLE_ID,
-      QueryManager.skipTransaction(queryOptions)
-    );
+    // await this.authConsumerService.addRoleToUser(
+    //   email.userId,
+    //   process.env.DEFAULT_VALIDATED_ROLE_ID,
+    //   QueryManager.skipTransaction(queryOptions)
+    // );
 
     await QueryManager.commitTransaction(queryOptions);
   }

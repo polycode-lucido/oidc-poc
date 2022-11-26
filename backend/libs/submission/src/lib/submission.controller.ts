@@ -1,21 +1,20 @@
 import { Controller, Post, Body, Get, Param } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Subject } from '@polycode/decorator';
-
 import { submissionBodySchema } from './templates/schema/body/submission.body.schema';
 import { submissionResponseSchema } from './templates/schema/response/submission.response.schema';
 import { lastAttemptResponseSchema } from './templates/schema/response/lastAttempt.response.schema';
 import { SubmissionDTO } from './templates/dtos/submission.dto';
 import { ApiRouteAuthenticated } from '@polycode/docs';
 import { SubmissionService } from './submission.service';
-import { Authorize } from '@polycode/auth-consumer';
 import { submissionOneBodySchema } from './templates/schema/body/submissionOne.body.schema';
 import { submissionOneResponseSchema } from './templates/schema/response/submissionOne.response.schema';
 import { SubmissionOneDTO } from './templates/dtos/submissionOne.dto';
-import { SubmissionCreateAuthorization } from './templates/policies';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 
 @ApiTags('Submission')
 @Controller('submission')
+@Resource('submission')
 export class SubmissionController {
   constructor(private readonly submissionService: SubmissionService) {}
 
@@ -32,7 +31,7 @@ export class SubmissionController {
     },
   })
   @Get('/:componentId')
-  @Authorize()
+  @Scopes('read')
   async getSubmissions(
     @Subject('internalIdentifier') userId: string,
     @Param('componentId') componentId: string
@@ -56,7 +55,7 @@ export class SubmissionController {
     },
   })
   @Post()
-  @Authorize(SubmissionCreateAuthorization)
+  @Scopes('create')
   async submit(
     @Body() submissionDTO: SubmissionDTO,
     @Subject('internalIdentifier') userId: string
@@ -80,7 +79,7 @@ export class SubmissionController {
     },
   })
   @Post('/:validatorId')
-  @Authorize(SubmissionCreateAuthorization)
+  @Scopes('write')
   async submitOne(
     @Body() submissionDTO: SubmissionOneDTO,
     @Param('validatorId') validatorId: string

@@ -1,7 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { is409 } from '@polycode/to';
 import { CreateUserDto } from './templates/dtos/create-user.dto';
-import { AuthConsumerService } from '@polycode/auth-consumer';
 import { UserEmailService } from './email/email.service';
 import { UserSettingsService } from './settings/settings.service';
 import { Sequelize } from 'sequelize-typescript';
@@ -13,7 +12,7 @@ import { Attributes, Op } from 'sequelize';
 @Injectable()
 export class UserService extends GenericSequelizeService<User> {
   constructor(
-    private readonly authConsumerService: AuthConsumerService,
+    // private readonly authConsumerService: AuthConsumerService,
     private readonly userEmailService: UserEmailService,
     private readonly userSettingService: UserSettingsService,
     sequelize: Sequelize
@@ -21,6 +20,16 @@ export class UserService extends GenericSequelizeService<User> {
     super(User, sequelize, {
       fields: ['id', 'username', 'description', 'points', 'rank'],
     });
+  }
+
+  async findUserByEmail(email: string) {
+    const userEmail = await this.userEmailService._findOne({
+      where: {
+        email,
+      },
+    });
+
+    return this._findById(userEmail.userId);
   }
 
   /**
@@ -52,13 +61,6 @@ export class UserService extends GenericSequelizeService<User> {
 
     await this.userSettingService.create(
       user.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
-
-    await this.authConsumerService.createSubjectAsUser(
-      user.id,
-      createUserDto.email,
-      createUserDto.password,
       QueryManager.skipTransaction(queryOptions)
     );
 

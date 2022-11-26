@@ -5,7 +5,6 @@ import {
   Injectable,
   Logger,
 } from '@nestjs/common';
-import { AuthConsumerService, IRole } from '@polycode/auth-consumer';
 import { MailerConsumerService } from '@polycode/mailer-consumer';
 import { QueryManager, QueryOptions } from '@polycode/query-manager';
 import {
@@ -28,7 +27,6 @@ export class TeamMembersService {
     readonly sequelize: Sequelize,
     private readonly userService: UserService,
     private readonly userEmailService: UserEmailService,
-    private readonly authConsumerService: AuthConsumerService,
     @Inject(forwardRef(() => TeamProviderService))
     private readonly teamService: TeamProviderService,
     private readonly mailerConsumerService: MailerConsumerService
@@ -64,17 +62,6 @@ export class TeamMembersService {
     }
 
     await QueryManager.createTransaction(queryOptions, this.sequelize);
-
-    const role: IRole = await this.authConsumerService.findRoleByName(
-      this.teamService.getRoleNameForTeamMember(team.id),
-      queryOptions
-    );
-
-    await this.authConsumerService.addRoleToUser(
-      guestUser.id,
-      role.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
 
     await QueryManager.create<TeamMembers>(
       TeamMembers,
@@ -141,17 +128,6 @@ export class TeamMembersService {
     }
 
     await QueryManager.createTransaction(queryOptions, this.sequelize);
-
-    const role: IRole = await this.authConsumerService.findRoleByName(
-      this.teamService.getRoleNameForTeamMember(team.id),
-      queryOptions
-    );
-
-    await this.authConsumerService.removeRoleToUser(
-      deleteTeamMemberDto.userId,
-      role.id,
-      QueryManager.skipTransaction(queryOptions)
-    );
 
     await QueryManager.destroy(
       TeamMembers,

@@ -7,8 +7,10 @@ export const InvalidRefreshTokenError = new Error('Invalid refresh token');
 
 // credentials
 export interface Credentials {
-  accessToken: string;
-  refreshToken: string;
+  access_token: string;
+  refresh_token: string;
+  expires_in: number;
+  refresh_expires_in: number;
 }
 export type RefreshUser = () => any;
 export type SetCredentials = (newCreds: Credentials | undefined) => void;
@@ -27,6 +29,8 @@ export interface AsyncResponse<T> {
 // 1 minute timeout
 const fetchTimeout = 60000;
 
+let loggingIn = false;
+
 let apiServer =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === 'production'
@@ -35,7 +39,7 @@ let apiServer =
 
 export const setApiServer = (newApiServer: string) => {
   apiServer = newApiServer;
-}
+};
 
 // Fetch the backend api
 export async function fetchApi<MetaDataType, DataType>(
@@ -86,13 +90,13 @@ export async function refreshTokens(
   const { data, status } = await fetchApi<{}, Credentials>(
     '/auth/token',
     'POST',
-    {
-      grantType: 'refresh_token',
-      refreshToken: credentialsManager.credentials?.refreshToken,
-    }
+    credentialsManager.credentials
   );
 
   if (status === 201) {
+    setTimeout(() => {
+      refreshTokens(credentialsManager);
+    }, data.expires_in * 1000 - 5000);
     credentialsManager.setCredentials(data);
     return true;
   }
@@ -117,37 +121,27 @@ export async function fetchApiWithAuth<MetaDataType, DataType>(
     }
 
     return fetchApi<MetaDataType, DataType>(ressource, method, body, {
-      Authorization: `Bearer ${credentialsManager.credentials.accessToken}`,
+      Authorization: `Bearer ${credentialsManager.credentials.access_token}`,
     });
   };
 
   const response = await tryFetch();
 
-  if (response.status === 403) {
-    const success = await refreshTokens(credentialsManager);
-
-    if (success) return tryFetch();
-  }
-
   return response;
 }
 
 export async function login(
-  email: string,
-  password: string,
+  code: string,
   credentialsManager: CredentialsManager
 ): Promise<boolean> {
+  if (loggingIn) return false;
+  loggingIn = true;
   const { data, status } = await fetchApi<{}, Credentials>(
-    '/auth/token',
-    'POST',
-    {
-      grantType: 'implicit',
-      identity: email,
-      secret: password,
-    }
+    `/auth/callback?code=${code}`
   );
+  loggingIn = false;
 
-  if (status === 201) {
+  if (status === 200) {
     credentialsManager.setCredentials(data);
     return true;
   }
@@ -155,11 +149,12 @@ export async function login(
 }
 
 export async function logout(credentialsManager: CredentialsManager) {
-  return fetchApiWithAuth('/auth/logout', credentialsManager, 'POST')
-    .catch(
-      () => {} // ignore errors, logout not yet implemented in backend
-    )
-    .finally(() => {
-      credentialsManager.setCredentials(undefined);
-    });
+  return fetchApiWithAuth(
+    '/auth/logout',
+    credentialsManager,
+    'POST',
+    credentialsManager.credentials
+  ).finally(() => {
+    credentialsManager.setCredentials(undefined);
+  });
 }

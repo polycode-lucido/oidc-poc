@@ -5,7 +5,6 @@
     "runner": "apps/runner",
     "auth-consumer": "libs/auth-consumer",
     "auth-provider": "libs/auth-provider",
-    "casl": "libs/casl",
     "component": "libs/component",
     "content": "libs/content",
     "decorator": "libs/decorator",
@@ -22,14 +21,13 @@
     "response-formatter": "libs/response-formatter",
     "runner-consumer": "libs/runner-consumer",
     "runner-provider": "libs/runner-provider",
-    "shared" : "libs/shared",
+    "shared": "libs/shared",
     "submission": "libs/submission",
     "team-provider": "libs/team-provider",
     "test": "libs/test",
     "to": "libs/to",
     "item": "libs/item",
     "user": "libs/user",
-    "validation": "libs/validation",
     "validator": "libs/validator",
     "transactions": "libs/transactions"
   }

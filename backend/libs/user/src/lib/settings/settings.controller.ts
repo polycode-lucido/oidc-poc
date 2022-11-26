@@ -8,16 +8,14 @@ import { CreateSettingsDto } from './templates/dtos/create-settings.dto';
 import { UpdateSettingsDto } from './templates/dtos/update-settings.dto';
 import { settingsResponseSchema } from './templates/schemas/responses/settings.response.schema';
 import { patchSettingsBodySchema } from './templates/schemas/bodies/settings.body.patch.schema';
-import { Authorize } from '@polycode/auth-consumer';
-import {
-  UserSettingReadSelfAuthorization,
-  UserSettingUpdateSelfAuthorize,
-} from './templates/policies';
 import { userIdParamSchema } from '../templates/schemas/params/userId.param.schema';
 import { UserSettings } from '@polycode/shared';
+import { Resource, Scopes } from 'nest-keycloak-connect';
+import { ParseMePipe } from '../validation';
 
 @Controller('user/:userId/settings')
 @ApiTags('User')
+@Resource('user_settings')
 export class UserSettingsController extends GenericSequelizeController<
   UserSettings,
   CreateSettingsDto,
@@ -39,9 +37,9 @@ export class UserSettingsController extends GenericSequelizeController<
     },
   })
   @Get()
-  @Authorize(UserSettingReadSelfAuthorization)
   @GenericRoute()
-  get(@UserId() userId: string) {
+  @Scopes('read')
+  get(@UserId(ParseMePipe) userId: string) {
     return this.settingsService.findByUserId(userId);
   }
 
@@ -65,10 +63,10 @@ export class UserSettingsController extends GenericSequelizeController<
     ],
   })
   @Patch()
-  @Authorize(UserSettingUpdateSelfAuthorize)
   @GenericRoute()
+  @Scopes('update')
   update(
-    @UserId() userId: string,
+    @UserId(ParseMePipe) userId: string,
     @Body() updateSettingsDto: UpdateSettingsDto
   ) {
     return this.settingsService.update(userId, {
@@ -92,9 +90,9 @@ export class UserSettingsController extends GenericSequelizeController<
     ],
   })
   @Post('reset')
-  @Authorize(UserSettingUpdateSelfAuthorize)
   @GenericRoute()
-  reset(@UserId() userId: string) {
+  @Scopes('update')
+  reset(@UserId(ParseMePipe) userId: string) {
     return this.settingsService.reset(userId);
   }
 }

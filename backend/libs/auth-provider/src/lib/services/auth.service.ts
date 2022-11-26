@@ -1,55 +1,179 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { Role } from '../entities/Role.entity';
-import { SubjectType } from '../entities/Subject.entity';
-import { TokenService } from './token.service';
+import { HttpService } from '@nestjs/axios';
+import { HttpException, Injectable } from '@nestjs/common';
+import { JwtService } from '@nestjs/jwt';
+import { UserEmailService, UserService } from '@polycode/user';
+import { IsJWT, IsNumber } from 'class-validator';
+import * as queryString from 'querystring';
+import { catchError, map, tap } from 'rxjs';
 
-export interface AuthorizeResponse {
-  status: string;
-  subject?: {
-    id: string;
-    type: SubjectType;
-    internalIdentifier: string;
-  };
-  roles?: Role[];
+export class KeycloakToken {
+  @IsJWT()
+  access_token: string;
+  @IsJWT()
+  refresh_token: string;
+  @IsNumber()
+  expires_in: number;
+  @IsNumber()
+  refresh_expires_in: number;
+
+  constructor(
+    access_token: string,
+    refresh_token: string,
+    expires_in: number,
+    refresh_expires_in: number
+  ) {
+    this.access_token = access_token;
+    this.refresh_token = refresh_token;
+    this.expires_in = expires_in;
+    this.refresh_expires_in = refresh_expires_in;
+  }
 }
 
 @Injectable()
 export class AuthService {
-  constructor(private readonly tokenService: TokenService) {}
+  private keycloakUri: string;
+  private keycloakOIDCPath: string;
+  private keycloakResponseType: string;
+  private keycloakScope: string;
+  private keycloakRedirectUri: string;
+  private keycloakClientId: string;
+  private keycloakClientSecret: string;
+  // private keycloakLogoutUri: string;
 
-  /**
-   * It takes an authorization header, splits it into two parts, verifies the second part, and returns
-   * the result
-   * @param {string} authorizationHeader - The authorization header that was passed in the request.
-   * @returns The token is being returned.
-   */
-  async authorize(authorizationHeader: string): Promise<AuthorizeResponse> {
-    if (!authorizationHeader) {
-      throw new UnauthorizedException();
-    }
+  constructor(
+    private readonly httpService: HttpService,
+    private readonly userService: UserService,
+    private readonly jwtService: JwtService,
+    private readonly userEmailService: UserEmailService
+  ) {
+    this.keycloakUri = 'http://localhost:8080/';
+    this.keycloakOIDCPath = 'realms/polycode/protocol/openid-connect/';
+    this.keycloakResponseType = 'code';
+    this.keycloakScope = 'profile';
+    this.keycloakRedirectUri = 'http://localhost:3001/sign-in';
+    this.keycloakClientId = 'polycode-api';
+    this.keycloakClientSecret = '3jnsa9opY8drhWev983MujCmyFrp3aRP';
+    //this.keycloakLogoutUri = this._config.get('KEYCLOAK_LOGOUT_URI');
+  }
 
-    const authorizationSplit = `${authorizationHeader}`.trim().split(' ');
-    if (authorizationSplit.length !== 2) {
-      throw new UnauthorizedException();
-    }
+  getUrlLogin(): string {
+    return (
+      `${this.keycloakUri}` +
+      `${this.keycloakOIDCPath}` +
+      `auth` +
+      `?client_id=${this.keycloakClientId}` +
+      `&response_type=${this.keycloakResponseType}` +
+      `&scope=${this.keycloakScope}` +
+      `&redirect_uri=${queryString.escape(this.keycloakRedirectUri)}`
+    );
+  }
 
-    const bearer = authorizationSplit[1];
-    if (!bearer) {
-      throw new UnauthorizedException();
-    }
-
-    const token = await this.tokenService.verifyToken(bearer);
-
-    return {
-      status: 'success',
-      ...(token.subject && {
-        subject: {
-          id: token.subject.id,
-          type: token.subject.type,
-          internalIdentifier: token.subject.internalIdentifier,
-        },
-        roles: token.subject.roles,
-      }),
+  getAccessToken(code: string) {
+    const params = {
+      grant_type: 'authorization_code',
+      client_id: this.keycloakClientId,
+      client_secret: this.keycloakClientSecret,
+      code,
+      redirect_uri: this.keycloakRedirectUri,
     };
+
+    return this.httpService
+      .post(
+        `${this.keycloakUri}` + `${this.keycloakOIDCPath}` + `token`,
+        queryString.stringify(params),
+        this.getContentType()
+      )
+      .pipe(
+        map((res) => {
+          return new KeycloakToken(
+            res.data.access_token,
+            res.data.refresh_token,
+            res.data.expires_in,
+            res.data.refresh_expires_in
+          );
+        }),
+        catchError((e) => {
+          throw new HttpException(e.response.data, e.response.status);
+        }),
+        tap(async (token) => {
+          type Payload = {
+            sub: string;
+            email: string;
+            preferred_username: string;
+            email_verified: boolean;
+          };
+          const { email, preferred_username } = this.jwtService.decode(
+            token.access_token
+          ) as Payload;
+          const user = await this.userEmailService.findByEmail(email);
+          if (!user) {
+            this.userService.create({
+              email,
+              isVerified: true,
+              username: preferred_username,
+            });
+          } else {
+            if (!user.isVerified) {
+              user.isVerified = true;
+              await user.save();
+            }
+          }
+        })
+      );
+  }
+
+  refreshAccessToken(refresh_token: string) {
+    const params = {
+      grant_type: 'refresh_token',
+      client_id: this.keycloakClientId,
+      client_secret: this.keycloakClientSecret,
+      refresh_token: refresh_token,
+      redirect_uri: this.keycloakRedirectUri,
+    };
+
+    return this.httpService
+      .post(
+        `${this.keycloakUri}` + `${this.keycloakOIDCPath}` + `token`,
+        queryString.stringify(params),
+        this.getContentType()
+      )
+      .pipe(
+        map(
+          (res) =>
+            new KeycloakToken(
+              res.data.access_token,
+              res.data.refresh_token,
+              res.data.expires_in,
+              res.data.refresh_expires_in
+            )
+        ),
+        catchError((e) => {
+          throw new HttpException(e.response.data, e.response.status);
+        })
+      );
+  }
+
+  logout(refresh_token: string) {
+    const params = {
+      client_id: this.keycloakClientId,
+      client_secret: this.keycloakClientSecret,
+      refresh_token: refresh_token,
+    };
+    return this.httpService
+      .post(
+        `${this.keycloakUri}` + `${this.keycloakOIDCPath}` + `logout`,
+        queryString.stringify(params),
+        this.getContentType()
+      )
+      .pipe(
+        map((res) => res.data),
+        catchError((e) => {
+          throw new HttpException(e.response.data, e.response.status);
+        })
+      );
+  }
+
+  getContentType() {
+    return { headers: { 'Content-Type': 'application/x-www-form-urlencoded' } };
   }
 }

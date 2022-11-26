@@ -24,19 +24,13 @@ import { itemGetResponseSchema } from './templates/schemas/item/response/item.re
 import { itemIdSchema } from './templates/schemas/item/params/itemId.params.schema';
 import { UpdateItemDTO } from './templates/dtos/update-item.dto';
 import { buyResponseSchema } from './templates/schemas/item/response/buyItem.reponse.schema';
-import { Authorize } from '@polycode/auth-consumer';
 import { TransactionsService } from '@polycode/transactions';
 import { Subject } from '@polycode/decorator';
 import { QueryOptions } from '@polycode/query-manager';
-import {
-  ItemCreateAuthorization,
-  ItemDeleteOneAuthorize,
-  ItemReadAllAuthorize,
-  ItemReadOneAuthorize,
-  ItemReadUpdateOneAuthorize,
-} from './templates/policies';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 
 @Controller('item')
+@Resource('item')
 @ApiTags('Item')
 export class ItemController {
   constructor(
@@ -58,7 +52,7 @@ export class ItemController {
     },
   })
   @Post()
-  @Authorize(ItemCreateAuthorization)
+  @Scopes('create')
   async create(@Body() item: CreateItemDTO) {
     return this.itemService.format(await this.itemService.create(item));
   }
@@ -93,7 +87,7 @@ export class ItemController {
     },
   })
   @Get()
-  @Authorize(ItemReadAllAuthorize)
+  @Scopes('read')
   async findAll(@Req() request: QueryOptions) {
     const filter = {
       ...Object.keys(request?.filter?.keys || []).reduce(
@@ -159,7 +153,7 @@ export class ItemController {
     ],
   })
   @Get(':id')
-  @Authorize(ItemReadOneAuthorize)
+  @Scopes('find')
   async findOne(@Param('id') id: string) {
     return this.itemService.format(await this.itemService.getOne(id));
   }
@@ -184,7 +178,7 @@ export class ItemController {
     ],
   })
   @Patch(':id')
-  @Authorize(ItemReadUpdateOneAuthorize)
+  @Scopes('update')
   async patch(@Param('id') id: string, @Body() patchItem: UpdateItemDTO) {
     return this.itemService.format(await this.itemService.patch(id, patchItem));
   }
@@ -204,7 +198,7 @@ export class ItemController {
     ],
   })
   @Delete(':id')
-  @Authorize(ItemDeleteOneAuthorize)
+  @Scopes('delete')
   async delete(@Param('id') id: string) {
     await this.itemService.delete(id);
   }
@@ -237,7 +231,7 @@ export class ItemController {
     ],
   })
   @Post('buy/:id')
-  @Authorize()
+  @Scopes('read')
   async buy(
     @Param('id') id: string,
     @Subject('internalIdentifier') user: string
@@ -282,7 +276,7 @@ export class ItemController {
     },
   })
   @Get('bought/:id')
-  @Authorize()
+  @Scopes('read')
   async wasBought(
     @Param('id') id: string,
     @Subject('internalIdentifier') user: string

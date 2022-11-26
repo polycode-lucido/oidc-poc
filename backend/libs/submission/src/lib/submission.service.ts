@@ -110,7 +110,7 @@ export class SubmissionService {
               settings: languageSettings,
             })
             .then((result) => {
-              const codeResult: CodeResult = result.data.data;
+              const codeResult: CodeResult = result.data;
               // if error occurs during run, reject
               if (codeResult.exitCode) {
                 return resolve({
@@ -185,7 +185,7 @@ export class SubmissionService {
         settings: languageSettings,
       })
       .then((result) => {
-        const codeResult: CodeResult = result.data.data;
+        const codeResult: CodeResult = result.data;
 
         if (codeResult.exitCode) {
           return {

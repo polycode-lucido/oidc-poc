@@ -20,14 +20,11 @@ import { DeleteTeamMemberDto } from './template/dtos/delete-member.dto';
 import { createTeamMemberBodySchema } from './template/schemas/member/body/member.body.create.schema';
 import { deleteTeamMemberBodySchema } from './template/schemas/member/body/member.body.delete.schema';
 import { TeamProviderService } from '../team-provider.service';
-import { Authorize } from '@polycode/auth-consumer';
-import {
-  TeamMemberCreateAuthorize,
-  TeamMemberDeleteAuthorize,
-} from './template/policies';
+import { Resource, Scopes } from 'nest-keycloak-connect';
 
 @Controller('team/:teamId/members')
 @ApiTags('Team')
+@Resource('team')
 export class TeamMembersController {
   constructor(
     private readonly teamMembersService: TeamMembersService,
@@ -53,7 +50,7 @@ export class TeamMembersController {
     ],
   })
   @Post()
-  @Authorize(TeamMemberCreateAuthorize)
+  @Scopes('create')
   async create(
     @Req() request,
     @Param('teamId', ParseUUIDPipe) teamId: string,
@@ -87,7 +84,7 @@ export class TeamMembersController {
     ],
   })
   @Delete()
-  @Authorize(TeamMemberDeleteAuthorize)
+  @Scopes('delete')
   async delete(
     @Param('teamId', ParseUUIDPipe) teamId: string,
     @Body() deleteTeamMemberDto: DeleteTeamMemberDto

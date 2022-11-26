@@ -1,10 +1,10 @@
 import { ModuleModule } from '@polycode/module';
-import { Module } from '@nestjs/common';
+import { MiddlewareConsumer, Module, RequestMethod } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { AuthConsumerModule } from '@polycode/auth-consumer';
-import { AuthProviderModule } from '@polycode/auth-provider';
+import { AuthMiddleware, AuthProviderModule } from '@polycode/auth-provider';
 import { MailerConsumerModule } from '@polycode/mailer-consumer';
 import { ComponentModule } from '@polycode/component';
 import { ContentModule } from '@polycode/content';
@@ -18,6 +18,7 @@ import { ValidatorModule } from '@polycode/validator';
 import { SubmissionModule } from '@polycode/submission';
 import { PrometheusModule } from '@polycode/prometheus';
 import { TransactionsModule } from '@polycode/transactions';
+import { JwtModule } from '@nestjs/jwt';
 
 @Module({
   imports: [
@@ -63,6 +64,7 @@ import { TransactionsModule } from '@polycode/transactions';
     TransactionsModule,
     MailerConsumerModule.forRoot({}),
     ModuleModule,
+    JwtModule.register({ secret: process.env.AUTH_JWT_SECRET }),
     TeamProviderModule,
     ValidatorModule,
     SubmissionModule,
@@ -72,4 +74,8 @@ import { TransactionsModule } from '@polycode/transactions';
   controllers: [AppController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule {
+  configure(consumer: MiddlewareConsumer): void {
+    consumer.apply(AuthMiddleware).forRoutes('*');
+  }
+}
