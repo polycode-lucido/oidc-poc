@@ -1,5 +1,5 @@
 import { BadRequestException, Injectable, PipeTransform } from '@nestjs/common';
-import { UserService } from '@polycode/user';
+import { UserService } from './user.service';
 import { Request } from 'express';
 
 @Injectable()
