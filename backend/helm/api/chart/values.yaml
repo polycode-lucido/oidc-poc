@@ -4,7 +4,7 @@
 
 image:
   repository: ghcr.io/polycode-lucido/oidc-poc/api
-  pullPolicy: always
+  pullPolicy: Always
   tag: latest
 
 fullnameOverride: 'api'
