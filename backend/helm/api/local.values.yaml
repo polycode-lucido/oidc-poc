@@ -5,10 +5,6 @@
 replicaCount: 1
 
 fullOverrideEnv:
-  - name: AUTH_JWT_ISSUER
-    value: https://api.polycode.127.0.0.1.sslip.io
-  - name: AUTH_JWT_AUDIENCE
-    value: https://polycode.127.0.0.1.sslip.io
   - name: PUBLIC_WWW_URL
     value: https://www.polycode.127.0.0.1.sslip.io
   - name: MAIL_FROM_DO_NOT_REPLY
