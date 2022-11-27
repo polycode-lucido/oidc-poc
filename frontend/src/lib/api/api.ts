@@ -35,7 +35,7 @@ let apiServer =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === 'production'
     ? 'https://api.polycode.dopolytech.fr'
-    : 'http://localhost:3000');
+    : 'http://localhost:3001');
 
 export const setApiServer = (newApiServer: string) => {
   apiServer = newApiServer;

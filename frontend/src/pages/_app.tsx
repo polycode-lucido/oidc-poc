@@ -26,7 +26,12 @@ interface MyAppProps extends AppProps {
 }
 
 export default function MyApp(props: MyAppProps) {
-  const { Component, emotionCache = clientSideEmotionCache, pageProps, apiUrl } = props;
+  const {
+    Component,
+    emotionCache = clientSideEmotionCache,
+    pageProps,
+    apiUrl,
+  } = props;
 
   useEffect(() => {
     if (apiUrl) {
@@ -71,5 +76,8 @@ export default function MyApp(props: MyAppProps) {
 
 MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
-  return { ...appProps, apiUrl: process.env.PUBLIC_API_URL }
-}
+  return {
+    ...appProps,
+    apiUrl: process.env.PUBLIC_API_URL,
+  };
+};
