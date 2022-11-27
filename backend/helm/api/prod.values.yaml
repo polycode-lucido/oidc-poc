@@ -28,13 +28,13 @@ overrideEnv:
         key: email-ses-secret-key
   - name: KEYCLOAK_RSA_PUBLIC_KEY
     value: >- 
-    ... ----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs9445kj9iumZ7idETAnUb2SLsxWhXQXeeqB6h4V7wcSrr91xN0jJha+GGkQYUEc/rkR8NFq8irvbGMoDz88khFSbRZ//sSu7mYra0Gsd8S6LIX2EBCLkwZ1u5wXce39s8t/ea/ikM0L69u1Xt0P6O+k5q/6q4ZstGRCL9LnGAE4S05gNyoCa9Nr197/Za6xO/0oewWJ+MKvLYceUv2bAZpj4cqSAz73uPzjdnCX0rLced/KeQ19ZbeCwQO7QV4DNTVM7DYkDbOpo+RPXQ4wyMAoN3OuESWlkyAFx7CAtOFalvDzOUgnO5EIsSq2qDeDw1BAyst1R8WB6j9IvTdEeiwIDAQAB\n-----END PUBLIC KEY-----
+      ----BEGIN PUBLIC KEY-----\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAs9445kj9iumZ7idETAnUb2SLsxWhXQXeeqB6h4V7wcSrr91xN0jJha+GGkQYUEc/rkR8NFq8irvbGMoDz88khFSbRZ//sSu7mYra0Gsd8S6LIX2EBCLkwZ1u5wXce39s8t/ea/ikM0L69u1Xt0P6O+k5q/6q4ZstGRCL9LnGAE4S05gNyoCa9Nr197/Za6xO/0oewWJ+MKvLYceUv2bAZpj4cqSAz73uPzjdnCX0rLced/KeQ19ZbeCwQO7QV4DNTVM7DYkDbOpo+RPXQ4wyMAoN3OuESWlkyAFx7CAtOFalvDzOUgnO5EIsSq2qDeDw1BAyst1R8WB6j9IvTdEeiwIDAQAB\n-----END PUBLIC KEY-----
   - name: KEYCLOAK_REALM
     value: polycode
   - name: KEYCLOAK_CLIENT_ID
     value: polycode-api
   - name: KEYCLOAK_URL
-    value
+    value: https://keycloak
   - name: KEYCLOAK_REDIRECT_URI
     value: https://poly-code.com/sign-in
   - name: KEYCLOAK_SECRET
