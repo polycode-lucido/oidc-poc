@@ -6,11 +6,11 @@ replicaCount: 3
 
 overrideEnv:
   - name: AUTH_JWT_ISSUER
-    value: https://api.polycode.simonlucido.com
+    value: https://api.poly-code.com
   - name: AUTH_JWT_AUDIENCE
-    value: https://polycode.simonlucido.com
+    value: https://poly-code.com
   - name: PUBLIC_WWW_URL
-    value: https://www.polycode.simonlucido.com
+    value: https://www.poly-code.com
   - name: EMAIL_PROVIDER
     value: FAKE
   - name: MAIL_FROM_DO_NOT_REPLY
@@ -86,11 +86,11 @@ sealedSecrets:
       AgCN7oBxP3wGmsODksSckndSDjxWHZnkiY/Yp2UsjCM6kfTCUoJQvtTpmdHLFSsP6uzBaDCa9auUtFR6hnOwpS3y513ghF5IEKIBQacmKHTxWRamdqYZGUE/99PbZ8Ka3cWtLh9HMR4Wq24NvVjhIqutvz8vEMp7LzlqrgwXuLvVgPYGhJ2/26aPFcJVjrYbd87Qbo8fyEh+5ES3mt+OQ6ZHdsvbyYnHjF5AtjXJiwPjOSpeABR+f73LClzGClBONQbfV1MEVW5WHAKucjPccMgBBuflh4bOmvoFmvpOd1lAIxWUiexMVo1K2cFoufcBB6CXHbnM8UrRktKineyuTLEFzHsBMTXuhibhkpp4X38quHaca/lxIuhlIj0Lv7kRu2GOp9VOFW6qS+QxjkRmx8/feOGytYMmTELTkdPltDybOSKGTaT7AL1tB4/x0UhDKv+wX3QpjbR79RhU160t5TkYrmSdEFT2JixbTwEHwLFFCVo1fV5yDUlCpdzbLW3ai/LuCIYczXLNto1pS8kDpMrPMZY/z6bmO/7sRQhSxRwExY3BzgOZqVQM1dFyZHg+uEBHxIABgg9QugMJ3PiwhYAzS5G+1WwBnIzF4/DNm2s3tpm0QavK8Cyd5zQDH3jtOOkxde3PV5x3Ye/kQyPPIVvn7Mwk/1dQTdRYuVbBttty5jqYY0xo1Sjy7o2OkJngJxT++TutNgbdK39gXko+WS4mSy9INul7o0AaIR2UTKwU+Q==
 ingress:
   hosts:
-    - host: api.polycode.simonlucido.com
+    - host: api.poly-code.com
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - secretName: backend-tls
-      hosts:
-        - api.polycode.simonlucido.com
+  # tls:
+    # - secretName: backend-tls
+      # hosts:
+        # - api.poly-code.com

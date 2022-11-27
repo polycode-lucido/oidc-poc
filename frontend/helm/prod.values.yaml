@@ -6,22 +6,22 @@ replicaCount: 3
 
 env:
   - name: PUBLIC_API_URL
-    value: https://api.polycode.simonlucido.com
+    value: https://api.poly-code.com
 
 ingress:
   hosts:
-    - host: www.polycode.simonlucido.com
+    - host: www.poly-code.com
       paths:
         - path: /
           pathType: ImplementationSpecific
-    - host: polycode.simonlucido.com
+    - host: poly-code.com
       paths:
         - path: /
           pathType: ImplementationSpecific
-  tls:
-    - secretName: frontend-www-tls
-      hosts:
-        - www.polycode.simonlucido.com
-    - secretName: frontend-tls
-      hosts:
-        - polycode.simonlucido.com
+  # tls:
+  #   - secretName: frontend-www-tls
+  #     hosts:
+  #       - www.poly-code.com
+  #   - secretName: frontend-tls
+  #     hosts:
+  #       - poly-code.com
