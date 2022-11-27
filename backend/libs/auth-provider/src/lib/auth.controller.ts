@@ -17,11 +17,10 @@ import { AuthService, KeycloakToken } from './auth.service';
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @Unprotected()
   @Get('login')
-  login(@Res() res) {
-    res.status(HttpStatus.MOVED_PERMANENTLY);
-    res.redirect(this.authService.getUrlLogin());
+  @Unprotected()
+  login() {
+    return this.authService.getUrlLogin();
   }
 
   @Get('callback')

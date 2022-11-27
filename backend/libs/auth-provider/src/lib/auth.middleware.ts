@@ -1,4 +1,9 @@
-import { Injectable, Logger, NestMiddleware } from '@nestjs/common';
+import {
+  Injectable,
+  Logger,
+  NestMiddleware,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { NextFunction, Request, Response } from 'express';
 
@@ -15,8 +20,7 @@ export class AuthMiddleware implements NestMiddleware {
       }
       next();
     } catch (e) {
-      Logger.error(e);
-      res.status(401).send(e.message);
+      throw new UnauthorizedException(e.message);
     }
   }
 }
