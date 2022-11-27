@@ -1,10 +1,12 @@
 import { HttpService } from '@nestjs/axios';
-import { HttpException, Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { UserEmailService, UserService } from '@polycode/user';
 import { IsJWT, IsNumber } from 'class-validator';
 import * as queryString from 'querystring';
 import { catchError, map, tap } from 'rxjs';
+import { registerer } from './auth.config';
 
 export class KeycloakToken {
   @IsJWT()
@@ -31,7 +33,6 @@ export class KeycloakToken {
 
 @Injectable()
 export class AuthService {
-  private keycloakUri: string;
   private keycloakOIDCPath: string;
   private keycloakResponseType: string;
   private keycloakScope: string;
@@ -44,21 +45,20 @@ export class AuthService {
     private readonly httpService: HttpService,
     private readonly userService: UserService,
     private readonly jwtService: JwtService,
-    private readonly userEmailService: UserEmailService
+    private readonly userEmailService: UserEmailService,
+    @Inject(registerer.KEY)
+    private authConfig: ConfigType<typeof registerer>
   ) {
-    this.keycloakUri = 'http://localhost:8080/';
-    this.keycloakOIDCPath = 'realms/polycode/protocol/openid-connect/';
-    this.keycloakResponseType = 'code';
-    this.keycloakScope = 'profile';
-    this.keycloakRedirectUri = 'http://localhost:3001/sign-in';
-    this.keycloakClientId = 'polycode-api';
-    this.keycloakClientSecret = '3jnsa9opY8drhWev983MujCmyFrp3aRP';
-    //this.keycloakLogoutUri = this._config.get('KEYCLOAK_LOGOUT_URI');
+    this.keycloakOIDCPath = this.authConfig.keycloakOIDCPath;
+    this.keycloakResponseType = this.authConfig.keycloakResponseType;
+    this.keycloakScope = this.authConfig.keycloakScope;
+    this.keycloakRedirectUri = this.authConfig.keycloakRedirectUri;
+    this.keycloakClientId = this.authConfig.keycloakClientId;
+    this.keycloakClientSecret = this.authConfig.keycloakClientSecret;
   }
 
   getUrlLogin(): string {
     return (
-      `${this.keycloakUri}` +
       `${this.keycloakOIDCPath}` +
       `auth` +
       `?client_id=${this.keycloakClientId}` +
@@ -79,7 +79,7 @@ export class AuthService {
 
     return this.httpService
       .post(
-        `${this.keycloakUri}` + `${this.keycloakOIDCPath}` + `token`,
+        `${this.keycloakOIDCPath}` + `token`,
         queryString.stringify(params),
         this.getContentType()
       )
@@ -133,7 +133,7 @@ export class AuthService {
 
     return this.httpService
       .post(
-        `${this.keycloakUri}` + `${this.keycloakOIDCPath}` + `token`,
+        `${this.keycloakOIDCPath}` + `token`,
         queryString.stringify(params),
         this.getContentType()
       )
@@ -161,7 +161,7 @@ export class AuthService {
     };
     return this.httpService
       .post(
-        `${this.keycloakUri}` + `${this.keycloakOIDCPath}` + `logout`,
+        `${this.keycloakOIDCPath}` + `logout`,
         queryString.stringify(params),
         this.getContentType()
       )

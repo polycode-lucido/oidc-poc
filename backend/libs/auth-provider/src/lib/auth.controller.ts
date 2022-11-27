@@ -1,4 +1,3 @@
-import { HttpService } from '@nestjs/axios';
 import {
   Body,
   Controller,
@@ -11,15 +10,12 @@ import {
 } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { Unprotected } from 'nest-keycloak-connect';
-import { AuthService, KeycloakToken } from './services/auth.service';
+import { AuthService, KeycloakToken } from './auth.service';
 
 @Controller('auth')
 @ApiTags('Authentification')
 export class AuthController {
-  constructor(
-    private readonly axios: HttpService,
-    private readonly authService: AuthService
-  ) {}
+  constructor(private readonly authService: AuthService) {}
 
   @Unprotected()
   @Get('login')

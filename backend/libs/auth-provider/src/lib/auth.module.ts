@@ -1,22 +1,54 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
 import { JwtModule } from '@nestjs/jwt';
 import { UserModule } from '@polycode/user';
-import { registerer, validationSchema } from './auth.config';
+import {
+  AuthGuard,
+  KeycloakConnectModule,
+  ResourceGuard,
+  RoleGuard,
+} from 'nest-keycloak-connect';
+import { AuthConfigService, registerer, validationSchema } from './auth.config';
 import { AuthController } from './auth.controller';
-import { AuthMiddleware } from './middleware/auth.middleware';
-import { AuthService } from './services/auth.service';
+import { AuthMiddleware } from './auth.middleware';
+import { AuthService } from './auth.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ load: [registerer], validationSchema }),
-    JwtModule.register({ secret: process.env.AUTH_JWT_SECRET }),
+    ConfigModule.forRoot({
+      load: [registerer],
+      validationSchema,
+    }),
+    JwtModule.registerAsync({
+      imports: [ConfigModule.forRoot({ load: [registerer], validationSchema })],
+      useClass: AuthConfigService,
+    }),
+    KeycloakConnectModule.registerAsync({
+      imports: [ConfigModule.forRoot({ load: [registerer], validationSchema })],
+      useClass: AuthConfigService,
+    }),
     HttpModule,
     UserModule,
   ],
   controllers: [AuthController],
-  providers: [AuthService, AuthMiddleware],
+  providers: [
+    AuthService,
+    AuthMiddleware,
+    {
+      provide: APP_GUARD,
+      useClass: AuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: ResourceGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RoleGuard,
+    },
+  ],
   exports: [AuthService, AuthMiddleware],
 })
 export class AuthProviderModule {}

@@ -56,6 +56,9 @@ import { JwtModule } from '@nestjs/jwt';
         password: process.env.MONGODB_PASSWORD,
       },
     }),
+    JwtModule.register({
+      publicKey: process.env.KEYCLOAK_RSA_PUBLIC_KEY.replace(/\\n/gm, '\n'),
+    }),
     AuthProviderModule,
     AuthConsumerModule,
     UserModule,
@@ -64,7 +67,6 @@ import { JwtModule } from '@nestjs/jwt';
     TransactionsModule,
     MailerConsumerModule.forRoot({}),
     ModuleModule,
-    JwtModule.register({ secret: process.env.AUTH_JWT_SECRET }),
     TeamProviderModule,
     ValidatorModule,
     SubmissionModule,
