@@ -78,6 +78,6 @@ MyApp.getInitialProps = async (appContext: AppContext) => {
   const appProps = await App.getInitialProps(appContext);
   return {
     ...appProps,
-    apiUrl: process.env.PUBLIC_API_URL,
+    apiUrl: process.env.NEXT_PUBLIC_API_URL,
   };
 };

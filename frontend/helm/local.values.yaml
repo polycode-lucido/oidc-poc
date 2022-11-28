@@ -4,8 +4,8 @@
 
 replicaCount: 1
 
-env:
-  - name: PUBLIC_API_URL
+env:    
+  - name: NEXT_PUBLIC_API_URL
     value: http://api.polycode.127.0.0.1.sslip.io
 
 ingress:
