@@ -34,7 +34,7 @@ let loggingIn = false;
 let apiServer =
   process.env.NEXT_PUBLIC_API_URL ??
   (process.env.NODE_ENV === 'production'
-    ? 'https://api.polycode.dopolytech.fr'
+    ? 'https://api.poly-code.com'
     : 'http://localhost:3001');
 
 export const setApiServer = (newApiServer: string) => {
