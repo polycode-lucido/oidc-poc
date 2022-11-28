@@ -1,11 +1,13 @@
 import { Controller, Get } from '@nestjs/common';
 import { ApiTags } from '@nestjs/swagger';
 import { ApiRoute } from '@polycode/docs';
+import { Unprotected } from 'nest-keycloak-connect';
 
 @Controller()
 @ApiTags('Application')
 export class AppController {
   @Get('/health')
+  @Unprotected()
   @ApiRoute({
     operation: {
       summary: 'Get the health of the application',
