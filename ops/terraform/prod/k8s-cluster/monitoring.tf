@@ -12,6 +12,6 @@ resource "helm_release" "kube_prometheus_stack_release" {
 
   depends_on = [
     kubernetes_namespace.kube_prometheus_stack_namespace,
-    helm_release.cluster_issuers_release
+    helm_release.ingress_nginx_release
   ]
 }

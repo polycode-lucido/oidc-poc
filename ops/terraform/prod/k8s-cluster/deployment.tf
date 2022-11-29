@@ -14,6 +14,5 @@ resource "helm_release" "argo_cd_release" {
 
   depends_on = [
     kubernetes_namespace.argo_cd_namespace,
-    helm_release.cluster_issuers_release
   ]
 }
