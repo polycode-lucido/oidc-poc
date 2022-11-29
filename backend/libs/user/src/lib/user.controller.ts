@@ -16,7 +16,6 @@ import { UserId } from '@polycode/decorator';
 import { ApiRouteAuthenticated } from '@polycode/docs';
 import { GenericSequelizeController } from '@polycode/generic';
 import { User } from '@polycode/shared';
-import { ParseMePipe } from './validation';
 import { Resource, Scopes } from 'nest-keycloak-connect';
 import { CreateUserDto } from './templates/dtos/create-user.dto';
 import { UpdateUserDto } from './templates/dtos/update-user.dto';
@@ -25,6 +24,7 @@ import { userIdParamSchema } from './templates/schemas/params/userId.param.schem
 import { getTeamsResponseSchema } from './templates/schemas/responses/get.team.response.schema';
 import { userResponseSchema } from './templates/schemas/responses/user.response.schema';
 import { UserService } from './user.service';
+import { ParseMeOnlySelfPipe, ParseMePipe } from './validation';
 
 @Controller('user')
 @ApiTags('User')
@@ -91,7 +91,7 @@ export class UserController extends GenericSequelizeController<
   })
   @Get(':userId')
   @Scopes('read')
-  async findOne(@UserId(ParseMePipe) id: string) {
+  async findOne(@UserId(ParseMeOnlySelfPipe) id: string) {
     const user = await this.userService.findByIdWithRank(id);
 
     return this.userService.format(user);
@@ -122,7 +122,7 @@ export class UserController extends GenericSequelizeController<
   @Patch(':userId')
   @Scopes('update')
   update(
-    @UserId(ParseMePipe) id: string,
+    @UserId(ParseMeOnlySelfPipe) id: string,
     @Body() updateUserDto: UpdateUserDto
   ) {
     return this._updateById(id, updateUserDto);
@@ -146,7 +146,7 @@ export class UserController extends GenericSequelizeController<
   @Delete(':userId')
   @Scopes('delete')
   @HttpCode(204)
-  remove(@UserId(ParseMePipe) id: string) {
+  remove(@UserId(ParseMeOnlySelfPipe) id: string) {
     return this._deleteById(id);
   }
 

@@ -25,7 +25,7 @@ import { userIdParamSchema } from '../templates/schemas/params/userId.param.sche
 import { UserEmail } from '@polycode/shared';
 import { UserService } from '../user.service';
 import { Resource, Scopes, Public } from 'nest-keycloak-connect';
-import { ParseMePipe } from '../validation';
+import { ParseMeOnlySelfPipe } from '../validation';
 
 @Controller('user')
 @ApiTags('User')
@@ -58,7 +58,7 @@ export class UserEmailController extends GenericSequelizeController<
   })
   @Get(':userId/email')
   @Scopes('read')
-  async get(@UserId(ParseMePipe) userId: string) {
+  async get(@UserId(ParseMeOnlySelfPipe) userId: string) {
     const emails = await this.userEmailService.findAllByUserId(userId);
     return this.userEmailService.format(emails);
   }
@@ -85,7 +85,7 @@ export class UserEmailController extends GenericSequelizeController<
   @Post(':userId/email')
   @Scopes('create')
   async create(
-    @UserId(ParseMePipe) userId: string,
+    @UserId(ParseMeOnlySelfPipe) userId: string,
     @Body() emailDto: CreateEmailDto
   ) {
     const user = await this.userService._findById(userId);

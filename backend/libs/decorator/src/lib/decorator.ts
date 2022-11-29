@@ -16,3 +16,14 @@ export const UserId = createParamDecorator((_, ctx: ExecutionContext) => {
   const request = ctx.switchToHttp().getRequest();
   return request;
 });
+
+export const Role = createParamDecorator(
+  (_, ctx: ExecutionContext): string[] => {
+    return ctx
+      .switchToHttp()
+      .getRequest()
+      .authorization?.realm_access?.roles?.filter((role: string) =>
+        role.includes('app')
+      );
+  }
+);
