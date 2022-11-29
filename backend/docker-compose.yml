@@ -28,19 +28,17 @@ services:
       - MONGODB_ROOT_PASSWORD=root
 
   keycloak:
-    image: quay.io/keycloak/keycloak:20.0.1
+    container_name: keycloak
+    image: bitnami/keycloak:latest
     restart: always
+    hostname: keycloak
     ports:
-      - 8080:8080
+      - '8080:8080'
     environment:
-      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_USER: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
-      KC_HEALTH_ENABLED: true
-      KC_METRICS_ENABLED: true
-      KC_DB: postgres
-      KC_DB_URL: jdbc:postgresql://backend-postgres-1/postgres
-      KC_DB_USERNAME: postgres
-      KC_DB_PASSWORD: postgres
-      KC_HOSTNAME: localhost
-      KC_FEATURES: admin-fine-grained-authz
-    command: start-dev
+      KEYCLOAK_MANAGEMENT_PASSWORD: admin
+      KEYCLOAK_DATABASE_HOST: backend-postgres-1
+      KEYCLOAK_DATABASE_NAME: postgres
+      KEYCLOAK_DATABASE_USER: postgres
+      KEYCLOAK_DATABASE_PASSWORD: postgres
