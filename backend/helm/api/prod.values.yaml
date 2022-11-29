@@ -34,7 +34,7 @@ overrideEnv:
   - name: KEYCLOAK_CLIENT_ID
     value: polycode-api
   - name: KEYCLOAK_URL
-    value: https://keycloak
+    value: https://keycloak.poly-code.com/
   - name: KEYCLOAK_REDIRECT_URI
     value: https://poly-code.com/sign-in
   - name: KEYCLOAK_SECRET
