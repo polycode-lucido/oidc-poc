@@ -7,11 +7,11 @@ server:
       # For 307 errors force https
       nginx.ingress.kubernetes.io/backend-protocol: "HTTPS"
     hosts:
-      - argo.polycode.do-2021.fr
-    tls:
-      - secretName: argo-tls
-        hosts:
-          - argo.polycode.do-2021.fr
+      - argo.poly-code.com
+    # tls:
+      # - secretName: argo-tls
+        # hosts:
+          # - argo.poly-code.com
   additionalApplications:
     - name: prod-frontend
       namespace: argo-cd
