@@ -5,8 +5,10 @@ import { JwtService } from '@nestjs/jwt';
 import { UserEmailService, UserService } from '@polycode/user';
 import { IsJWT, IsNumber } from 'class-validator';
 import * as queryString from 'querystring';
-import { catchError, map, tap } from 'rxjs';
+import { catchError, concatMap, firstValueFrom, map, tap } from 'rxjs';
 import { registerer } from './auth.config';
+import { UserEmail } from '@polycode/shared';
+import { randomUUID } from 'crypto';
 
 export class KeycloakToken {
   @IsJWT()
@@ -39,7 +41,10 @@ export class AuthService {
   private keycloakRedirectUri: string;
   private keycloakClientId: string;
   private keycloakClientSecret: string;
-  // private keycloakLogoutUri: string;
+
+  private sessionMap = new Map<string, { [key: string]: unknown }>();
+  private sessionToken = new Map<string, string>();
+  private sessionRefreshToken = new Map<string, string>();
 
   constructor(
     private readonly httpService: HttpService,
@@ -68,7 +73,7 @@ export class AuthService {
     );
   }
 
-  getAccessToken(code: string) {
+  async getAccessToken(code: string) {
     const params = {
       grant_type: 'authorization_code',
       client_id: this.keycloakClientId,
@@ -77,49 +82,76 @@ export class AuthService {
       redirect_uri: this.keycloakRedirectUri,
     };
 
-    return this.httpService
-      .post(
-        `${this.keycloakOIDCPath}` + `token`,
-        queryString.stringify(params),
-        this.getContentType()
-      )
-      .pipe(
-        map((res) => {
-          return new KeycloakToken(
-            res.data.access_token,
-            res.data.refresh_token,
-            res.data.expires_in,
-            res.data.refresh_expires_in
-          );
-        }),
-        catchError((e) => {
-          throw new HttpException(e.response.data, e.response.status);
-        }),
-        tap(async (token) => {
-          type Payload = {
-            sub: string;
-            email: string;
-            preferred_username: string;
-            email_verified: boolean;
-          };
-          const { email, preferred_username } = this.jwtService.decode(
-            token.access_token
-          ) as Payload;
-          const user = await this.userEmailService.findByEmail(email);
-          if (!user) {
-            this.userService.create({
-              email,
-              isVerified: true,
-              username: preferred_username,
-            });
-          } else {
-            if (!user.isVerified) {
-              user.isVerified = true;
-              await user.save();
+    const session = await firstValueFrom(
+      this.httpService
+        .post(
+          `${this.keycloakOIDCPath}` + `token`,
+          queryString.stringify(params),
+          this.getContentType()
+        )
+        .pipe(
+          map((res) => {
+            return new KeycloakToken(
+              res.data.access_token,
+              res.data.refresh_token,
+              res.data.expires_in,
+              res.data.refresh_expires_in
+            );
+          }),
+          catchError((e) => {
+            throw new HttpException(e.response.data, e.response.status);
+          }),
+          concatMap(async (token) => {
+            type Payload = {
+              sub: string;
+              email: string;
+              preferred_username: string;
+              email_verified: boolean;
+            };
+            const decodedToken = this.jwtService.decode(
+              token.access_token
+            ) as Payload;
+            const { email, preferred_username } = decodedToken;
+            const user = await this.userEmailService.findByEmail(email);
+            if (!user) {
+              this.userService.create({
+                email,
+                isVerified: true,
+                username: preferred_username,
+              });
+            } else {
+              if (!user.isVerified) {
+                user.isVerified = true;
+                await user.save();
+              }
             }
-          }
-        })
-      );
+            const session = this.getSession(user, decodedToken);
+            this.setToken(session, token.access_token);
+            this.sessionRefreshToken.set(session, token.refresh_token);
+            return session;
+          })
+        )
+    );
+
+    return session;
+  }
+
+  getSession(user: UserEmail, token: { [key: string]: unknown }) {
+    const session = randomUUID();
+    this.sessionMap.set(session, token);
+    return session;
+  }
+
+  setToken(session: string, token: string) {
+    this.sessionToken.set(session, token);
+  }
+
+  getTokenFromSession(id: string) {
+    return this.sessionMap.get(id);
+  }
+
+  getEncodedTokenFromSession(id: string) {
+    return this.sessionToken.get(id);
   }
 
   refreshAccessToken(refresh_token: string) {
@@ -153,24 +185,27 @@ export class AuthService {
       );
   }
 
-  logout(refresh_token: string) {
+  async logout(session: string) {
+    const refresh_token = this.sessionRefreshToken.get(session);
     const params = {
       client_id: this.keycloakClientId,
       client_secret: this.keycloakClientSecret,
       refresh_token: refresh_token,
     };
-    return this.httpService
-      .post(
-        `${this.keycloakOIDCPath}` + `logout`,
-        queryString.stringify(params),
-        this.getContentType()
-      )
-      .pipe(
-        map((res) => res.data),
-        catchError((e) => {
-          throw new HttpException(e.response.data, e.response.status);
-        })
-      );
+    return await firstValueFrom(
+      this.httpService
+        .post(
+          `${this.keycloakOIDCPath}` + `logout`,
+          queryString.stringify(params),
+          this.getContentType()
+        )
+        .pipe(
+          map((res) => res.data),
+          catchError((e) => {
+            throw new HttpException(e.response.data, e.response.status);
+          })
+        )
+    );
   }
 
   getContentType() {

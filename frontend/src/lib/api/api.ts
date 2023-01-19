@@ -61,6 +61,7 @@ export async function fetchApi<MetaDataType, DataType>(
         ...headers,
         'Content-Type': 'application/json',
       },
+      credentials: 'include',
     }),
     new Promise((_, reject) => {
       setTimeout(() => reject(new Error('Request timeout')), fetchTimeout);
@@ -149,12 +150,9 @@ export async function login(
 }
 
 export async function logout(credentialsManager: CredentialsManager) {
-  return fetchApiWithAuth(
-    '/auth/logout',
-    credentialsManager,
-    'POST',
-    credentialsManager.credentials
-  ).finally(() => {
-    credentialsManager.setCredentials(undefined);
-  });
+  return fetchApiWithAuth('/auth/logout', credentialsManager, 'POST').finally(
+    () => {
+      credentialsManager.setCredentials(undefined);
+    }
+  );
 }

@@ -11,6 +11,7 @@ import {
 import { ApiTags } from '@nestjs/swagger';
 import { Unprotected } from 'nest-keycloak-connect';
 import { AuthService, KeycloakToken } from './auth.service';
+import { Response } from 'express';
 
 @Controller('auth')
 @ApiTags('Authentification')
@@ -25,8 +26,19 @@ export class AuthController {
 
   @Get('callback')
   @Unprotected()
-  getAccessToken(@Query('code') code: string) {
-    return this.authService.getAccessToken(code);
+  async getAccessToken(
+    @Query('code') code: string,
+    @Res({ passthrough: true }) res: Response
+  ) {
+    const session = await this.authService.getAccessToken(code);
+    res.cookie('token', session, {
+      httpOnly: true,
+      path: '/',
+      domain: 'localhost',
+      secure: true,
+      sameSite: 'none',
+    });
+    return session;
   }
 
   @Post('token')
@@ -37,7 +49,14 @@ export class AuthController {
 
   @Post('logout')
   @HttpCode(HttpStatus.NO_CONTENT)
-  logout(@Body() token: KeycloakToken) {
-    return this.authService.logout(token.refresh_token);
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('token', {
+      httpOnly: true,
+      path: '/',
+      domain: 'localhost',
+      secure: true,
+      sameSite: 'none',
+    });
+    return this.authService.logout(res.req.cookies['token']);
   }
 }

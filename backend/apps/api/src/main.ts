@@ -4,6 +4,7 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { Environment } from '@polycode/env';
 import { ValidationPipe } from '@nestjs/common';
 import helmet from 'helmet';
+import * as cookie from 'cookie-parser';
 import { ResponseFormatterInterceptor } from '@polycode/response-formatter';
 
 async function bootstrap() {
@@ -25,11 +26,14 @@ async function bootstrap() {
     app.use(helmet());
   }
 
+  app.use(cookie());
+
   app.enableCors({
     origin: true,
     methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
     preflightContinue: false,
     optionsSuccessStatus: 204,
+    credentials: true,
   });
 
   if (process.env.NODE_ENV === Environment.DEVELOPMENT) {
