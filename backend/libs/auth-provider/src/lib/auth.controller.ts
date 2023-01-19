@@ -34,7 +34,7 @@ export class AuthController {
     res.cookie('token', session, {
       httpOnly: true,
       path: '/',
-      domain: 'localhost',
+      domain: process.env['PUBLIC_API_URL'] || 'localhost',
       secure: true,
       sameSite: 'none',
     });
@@ -53,7 +53,7 @@ export class AuthController {
     res.clearCookie('token', {
       httpOnly: true,
       path: '/',
-      domain: 'localhost',
+      domain: process.env['PUBLIC_API_URL'] || 'localhost:3000',
       secure: true,
       sameSite: 'none',
     });
